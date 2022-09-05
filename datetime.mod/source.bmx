@@ -226,6 +226,7 @@ Extern
 	Function bmx_time_zone_base_utc_offset:Byte Ptr(tz:Byte Ptr)
 	Function bmx_time_zone_dst_offset:Byte Ptr(tz:Byte Ptr)
 	Function bmx_time_zone_to_posix_string:String(tz:Byte Ptr)
+	Function bmx_time_zone_free(tz:Byte Ptr)
 	
 	Function bmx_tz_database:Byte Ptr()
 	Function bmx_tz_load_from_file:Byte Ptr(filename:String)

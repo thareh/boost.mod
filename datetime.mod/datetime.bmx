@@ -2617,6 +2617,12 @@ Type TTimeZone
 		Return bmx_time_zone_to_posix_string(timeZonePtr)
 	End Method
 	
+	Method Delete()
+		If timeZonePtr Then
+			bmx_time_zone_free(timeZonePtr)
+			timeZonePtr = Null
+		End If
+	End Method
 End Type
 
 

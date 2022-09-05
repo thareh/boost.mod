@@ -38,6 +38,8 @@ using namespace boost::posix_time;
 using namespace boost::gregorian;
 using namespace boost::local_time;
 
+class MaxTimeZone;
+
 extern "C" {
 
 	date * bmx_datetime_localday();
@@ -213,24 +215,25 @@ extern "C" {
 	int bmx_time_period_isgreater(time_period * tp1, time_period * tp2);
 	int bmx_time_period_isequal(time_period * tp1, time_period * tp2);
 	
-	posix_time_zone * bmx_posix_time_zone(BBString * id);
-	BBString * bmx_time_zone_dst_zone_abbrev(time_zone * tz);
-	BBString * bmx_time_zone_std_zone_abbrev(time_zone * tz);
-	BBString * bmx_time_zone_dst_zone_name(time_zone * tz);
-	BBString * bmx_time_zone_std_zone_name(time_zone * tz);
-	int bmx_time_zone_has_dst(time_zone * tz);
-	ptime * bmx_time_zone_dst_local_start_time(time_zone * tz, int year);
-	ptime * bmx_time_zone_dst_local_end_time(time_zone * tz, int year);
-	time_duration * bmx_time_zone_base_utc_offset(time_zone * tz);
-	time_duration * bmx_time_zone_dst_offset(time_zone * tz);
-	BBString * bmx_time_zone_to_posix_string(time_zone * tz);
+	MaxTimeZone * bmx_posix_time_zone(BBString * id);
+	BBString * bmx_time_zone_dst_zone_abbrev(MaxTimeZone * tz);
+	BBString * bmx_time_zone_std_zone_abbrev(MaxTimeZone * tz);
+	BBString * bmx_time_zone_dst_zone_name(MaxTimeZone * tz);
+	BBString * bmx_time_zone_std_zone_name(MaxTimeZone * tz);
+	int bmx_time_zone_has_dst(MaxTimeZone * tz);
+	ptime * bmx_time_zone_dst_local_start_time(MaxTimeZone * tz, int year);
+	ptime * bmx_time_zone_dst_local_end_time(MaxTimeZone * tz, int year);
+	time_duration * bmx_time_zone_base_utc_offset(MaxTimeZone * tz);
+	time_duration * bmx_time_zone_dst_offset(MaxTimeZone * tz);
+	BBString * bmx_time_zone_to_posix_string(MaxTimeZone * tz);
+	void bmx_time_zone_free(MaxTimeZone * tz);
 	
 	tz_database * bmx_tz_database();
 	tz_database * bmx_tz_load_from_file(BBString * filename);
-	time_zone_ptr bmx_tz_time_zone_from_region(tz_database * db, BBString * id);
+	MaxTimeZone * bmx_tz_time_zone_from_region(tz_database * db, BBString * id);
 	
-	local_date_time * bmx_local_date_time_new_sec_clock(time_zone * tz);
-	local_date_time * bmx_local_date_time_new_time(ptime * p, time_zone * tz);
+	local_date_time * bmx_local_date_time_new_sec_clock(MaxTimeZone * tz);
+	local_date_time * bmx_local_date_time_new_time(ptime * p, MaxTimeZone * tz);
 	
 	BBString * bmx_month_to_string(int m);
 	void bmx_date_facet_format(date_facet * f, BBString * fmt);
@@ -267,7 +270,7 @@ extern "C" {
 	date * bmx_next_weekday(date * d, int weekday);
 	date * bmx_previous_weekday(date * d, int weekday);
 	
-	time_zone_ptr bmx_local_date_time_zone(local_date_time * ldt);
+	MaxTimeZone * bmx_local_date_time_zone(local_date_time * ldt);
 	int bmx_local_date_time_is_dst(local_date_time * ldt);
 	ptime * bmx_local_date_time_utc_time(local_date_time * ldt);
 	ptime * bmx_local_date_time_local_time(local_date_time * ldt);
@@ -311,6 +314,13 @@ extern "C" {
 
 //static std::stringstream outputStringStream;
 
+class MaxTimeZone
+{
+public:
+	MaxTimeZone(time_zone_ptr tz) : timeZone(tz) {}
+
+	time_zone_ptr timeZone;
+};
 
 BBString * bmx_BBString_from_stream(std::stringstream & stream) {
 	BBString * s = bbStringFromUTF8String((const unsigned char*)stream.str().c_str());
@@ -1022,52 +1032,55 @@ ptime * bmx_ptime_from_time_t(std::time_t * t) {
 	return new ptime(from_time_t(*t));
 }
 
-posix_time_zone * bmx_posix_time_zone(BBString * id) {
+MaxTimeZone * bmx_posix_time_zone(BBString * id) {
 	char * d = (char*)bbStringToUTF8String(id);
-	posix_time_zone * _zone = new posix_time_zone(std::string(d));
+	time_zone_ptr _zone = time_zone_ptr(new posix_time_zone(std::string(d)));
 	bbMemFree(d);
-	return _zone;
+	return new MaxTimeZone(_zone);
 }
 
-BBString * bmx_time_zone_dst_zone_abbrev(time_zone * tz) {
-	return bbStringFromUTF8String((const unsigned char*)tz->dst_zone_abbrev().c_str());
+BBString * bmx_time_zone_dst_zone_abbrev(MaxTimeZone * tz) {
+	return bbStringFromUTF8String((const unsigned char*)tz->timeZone->dst_zone_abbrev().c_str());
 }
 
-BBString * bmx_time_zone_std_zone_abbrev(time_zone * tz) {
-	return bbStringFromUTF8String((const unsigned char*)tz->std_zone_abbrev().c_str());
+BBString * bmx_time_zone_std_zone_abbrev(MaxTimeZone * tz) {
+	return bbStringFromUTF8String((const unsigned char*)tz->timeZone->std_zone_abbrev().c_str());
 }
 
-BBString * bmx_time_zone_dst_zone_name(time_zone * tz) {
-	return bbStringFromUTF8String((const unsigned char*)tz->dst_zone_name().c_str());
+BBString * bmx_time_zone_dst_zone_name(MaxTimeZone * tz) {
+	return bbStringFromUTF8String((const unsigned char*)tz->timeZone->dst_zone_name().c_str());
 }
 
-BBString * bmx_time_zone_std_zone_name(time_zone * tz) {
-	return bbStringFromUTF8String((const unsigned char*)tz->std_zone_name().c_str());
+BBString * bmx_time_zone_std_zone_name(MaxTimeZone * tz) {
+	return bbStringFromUTF8String((const unsigned char*)tz->timeZone->std_zone_name().c_str());
 }
 
-int bmx_time_zone_has_dst(time_zone * tz) {
-	return tz->has_dst();
+int bmx_time_zone_has_dst(MaxTimeZone * tz) {
+	return tz->timeZone->has_dst();
 }
 
-ptime * bmx_time_zone_dst_local_start_time(time_zone * tz, int year) {
-	return new ptime(tz->dst_local_start_time(year));
+ptime * bmx_time_zone_dst_local_start_time(MaxTimeZone * tz, int year) {
+	return new ptime(tz->timeZone->dst_local_start_time(year));
 }
 
-ptime * bmx_time_zone_dst_local_end_time(time_zone * tz, int year) {
-	return new ptime(tz->dst_local_end_time(year));
+ptime * bmx_time_zone_dst_local_end_time(MaxTimeZone * tz, int year) {
+	return new ptime(tz->timeZone->dst_local_end_time(year));
 }
 
-
-time_duration * bmx_time_zone_base_utc_offset(time_zone * tz) {
-	return new time_duration(tz->base_utc_offset());
+time_duration * bmx_time_zone_base_utc_offset(MaxTimeZone * tz) {
+	return new time_duration(tz->timeZone->base_utc_offset());
 }
 
-time_duration * bmx_time_zone_dst_offset(time_zone * tz) {
-	return new time_duration(tz->dst_offset());
+time_duration * bmx_time_zone_dst_offset(MaxTimeZone * tz) {
+	return new time_duration(tz->timeZone->dst_offset());
 }
 
-BBString * bmx_time_zone_to_posix_string(time_zone * tz) {
-	return bbStringFromUTF8String((const unsigned char*)tz->to_posix_string().c_str());
+BBString * bmx_time_zone_to_posix_string(MaxTimeZone * tz) {
+	return bbStringFromUTF8String((const unsigned char*)tz->timeZone->to_posix_string().c_str());
+}
+
+void bmx_time_zone_free(MaxTimeZone * tz) {
+	delete tz;
 }
 
 tz_database * bmx_tz_database() {
@@ -1082,19 +1095,19 @@ tz_database * bmx_tz_load_from_file(BBString * filename) {
 	return db;
 }
 
-time_zone_ptr bmx_tz_time_zone_from_region(tz_database * db, BBString * id) {
+MaxTimeZone * bmx_tz_time_zone_from_region(tz_database * db, BBString * id) {
 	char * d = (char*)bbStringToUTF8String(id);
 	time_zone_ptr p = db->time_zone_from_region(std::string(d));
 	bbMemFree(d);
-	return p;
+	return new MaxTimeZone(p);
 }
 
-local_date_time * bmx_local_date_time_new_sec_clock(time_zone * tz) {
-	return new local_date_time(local_sec_clock::local_time(time_zone_ptr(tz)));
+local_date_time * bmx_local_date_time_new_sec_clock(MaxTimeZone * tz) {
+	return new local_date_time(local_sec_clock::local_time(tz->timeZone));
 }
 
-local_date_time * bmx_local_date_time_new_time(ptime * p, time_zone * tz) {
-	return new local_date_time(*p, time_zone_ptr(tz));
+local_date_time * bmx_local_date_time_new_time(ptime * p, MaxTimeZone * tz) {
+	return new local_date_time(*p, tz->timeZone);
 }
 
 BBString * bmx_month_to_string(int m) {
@@ -1292,8 +1305,8 @@ date * bmx_previous_weekday(date * d, int weekday) {
 	return new date(previous_weekday(*d, greg_weekday(weekday)));
 }
 
-time_zone_ptr bmx_local_date_time_zone(local_date_time * ldt) {
-	return ldt->zone();
+MaxTimeZone * bmx_local_date_time_zone(local_date_time * ldt) {
+	return new MaxTimeZone(ldt->zone());
 }
 
 int bmx_local_date_time_is_dst(local_date_time * ldt) {
