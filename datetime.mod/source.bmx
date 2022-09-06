@@ -40,7 +40,7 @@ Import "glue.cpp"
 Extern
 
 	Function bmx_datetime_newdate:Byte Ptr(year:Int, Month:Int, day:Int)
-	Function bmx_datetime_delete(date:Byte Ptr)
+	Function bmx_datetime_free(date:Byte Ptr)
 
 	Function bmx_datetime_before:Int(myDate:Byte Ptr, yourDate:Byte Ptr)
 	Function bmx_datetime_after:Int(myDate:Byte Ptr, yourDate:Byte Ptr)
@@ -69,7 +69,7 @@ Extern
 	Function bmx_datetime_period_datedate:Byte Ptr(d1:Byte Ptr, d2:Byte Ptr)
 	Function bmx_datetime_period_withdays:Byte Ptr(date:Byte Ptr, days:Int)
 	Function bmx_datetime_period_shift(period:Byte Ptr, days:Int)
-	Function bmx_datetime_period_delete(period:Byte Ptr)
+	Function bmx_datetime_period_free(period:Byte Ptr)
 	
 	Function bmx_datetime_period_begin:Byte Ptr(period:Byte Ptr)
 	Function bmx_datetime_period_last:Byte Ptr(period:Byte Ptr)
@@ -95,7 +95,7 @@ Extern
 	Function bmx_datetime_period_isgreater:Int(p1:Byte Ptr, p2:Byte Ptr)
 	Function bmx_datetime_period_isequal:Int(p1:Byte Ptr, p2:Byte Ptr)
 
-	Function bmx_datetime_iter_delete(iter:Byte Ptr)
+	Function bmx_datetime_iter_free(iter:Byte Ptr)
 	
 	Function bmx_datetime_dayiter:Byte Ptr(date:Byte Ptr, offset:Int)
 	Function bmx_datetime_monthiter:Byte Ptr(date:Byte Ptr, offset:Int)
@@ -125,7 +125,7 @@ Extern
 	Function bmx_datetime_iter_asformat:String(date:Byte Ptr, f:String, locale:Byte Ptr, facet:Byte Ptr)
 
 	Function bmx_time_duration:Byte Ptr(hours:Int, minutes:Int, seconds:Int, fraction:Int)
-	Function bmx_time_duration_delete(duration:Byte Ptr)
+	Function bmx_time_duration_free(duration:Byte Ptr)
 	Function bmx_time_duration_new_hours:Byte Ptr(value:Int)
 	Function bmx_time_duration_new_minutes:Byte Ptr(value:Int)
 	Function bmx_time_duration_new_seconds:Byte Ptr(value:Int)
@@ -153,7 +153,7 @@ Extern
 	Function bmx_time_num_fractional_digits:Int()
 	
 	Function bmx_ptime_new:Byte Ptr(date:Byte Ptr, duration:Byte Ptr)
-	Function bmx_ptime_delete(time:Byte Ptr)
+	Function bmx_ptime_free(time:Byte Ptr)
 	Function bmx_ptime_local_new:Byte Ptr()
 	Function bmx_ptime_universal_new:Byte Ptr()
 	Function bmx_ptime_local_microsecond_new:Byte Ptr()
@@ -176,15 +176,15 @@ Extern
 	
 	Function bmx_partial_date_new:Byte Ptr(day:Int, Month:Int)
 	Function bmx_partial_date_get_date:Byte Ptr(ybg:Byte Ptr, year:Int)
-	Function bmx_partial_date_delete(ybg:Byte Ptr)
+	Function bmx_partial_date_free(ybg:Byte Ptr)
 	
 	Function bmx_last_day_of_week_in_month_new:Byte Ptr(WeekDay:Int, Month:Int)
 	Function bmx_last_day_of_week_in_month_get_date:Byte Ptr(ybg:Byte Ptr, year:Int)
-	Function bmx_last_day_of_week_in_month_delete(ybg:Byte Ptr)
+	Function bmx_last_day_of_week_in_month_free(ybg:Byte Ptr)
 
 	Function bmx_first_day_of_week_in_month_new:Byte Ptr(WeekDay:Int, Month:Int)
 	Function bmx_first_day_of_week_in_month_get_date:Byte Ptr(ybg:Byte Ptr, year:Int)
-	Function bmx_first_day_of_week_in_month_delete(ybg:Byte Ptr)
+	Function bmx_first_day_of_week_in_month_free(ybg:Byte Ptr)
 	
 	Function bmx_weekday_to_string:String(WeekDay:Int)
 	
@@ -200,7 +200,7 @@ Extern
 	Function bmx_time_period_withduration:Byte Ptr(beginTime:Byte Ptr, duration:Byte Ptr)
 	Function bmx_time_period_shift(time:Byte Ptr, duration:Byte Ptr)
 	Function bmx_time_period_begin:Byte Ptr(time:Byte Ptr)
-	Function bmx_time_period_delete(time:Byte Ptr)
+	Function bmx_time_period_free(time:Byte Ptr)
 	Function bmx_time_period_last:Byte Ptr(time:Byte Ptr)
 	Function bmx_time_period_end:Byte Ptr(time:Byte Ptr)
 	Function bmx_time_period_length:Byte Ptr(time:Byte Ptr)
@@ -231,6 +231,7 @@ Extern
 	Function bmx_tz_database:Byte Ptr()
 	Function bmx_tz_load_from_file:Byte Ptr(filename:String)
 	Function bmx_tz_time_zone_from_region:Byte Ptr(db:Byte Ptr, id:String)
+	Function bmx_tz_database_free(db:Byte Ptr)
 	
 	Function bmx_local_date_time_new_sec_clock:Byte Ptr(zone:Byte Ptr)
 	Function bmx_local_date_time_new_time:Byte Ptr(time:Byte Ptr, zone:Byte Ptr)
@@ -257,14 +258,14 @@ Extern
 
 	Function bmx_nth_day_of_week_in_month_new:Byte Ptr(nth:Int, WeekDay:Int, Month:Int)
 	Function bmx_nth_day_of_week_in_month_get_date:Byte Ptr(ybg:Byte Ptr, year:Int)
-	Function bmx_nth_day_of_week_in_month_delete(ybg:Byte Ptr)
+	Function bmx_nth_day_of_week_in_month_free(ybg:Byte Ptr)
 	
 	Function bmx_first_day_of_week_after_new:Byte Ptr(WeekDay:Int)
 	Function bmx_first_day_of_week_after_get_date:Byte Ptr(ybg:Byte Ptr, date:Byte Ptr)
-	Function bmx_first_day_of_week_after_delete(ybg:Byte Ptr)
+	Function bmx_first_day_of_week_after_free(ybg:Byte Ptr)
 	Function bmx_first_day_of_week_before_new:Byte Ptr(WeekDay:Int)
 	Function bmx_first_day_of_week_before_get_date:Byte Ptr(ybg:Byte Ptr, date:Byte Ptr)
-	Function bmx_first_day_of_week_before_delete(ybg:Byte Ptr)
+	Function bmx_first_day_of_week_before_free(ybg:Byte Ptr)
 	
 	Function bmx_days_until_weekday:Int(date:Byte Ptr, WeekDay:Int)
 	Function bmx_days_before_weekday:Int(date:Byte Ptr, WeekDay:Int)
@@ -289,11 +290,11 @@ Extern
 	Function bmx_local_date_time_subtract_years:Byte Ptr(ldt:Byte Ptr, value:Int)
 	Function bmx_local_date_time_add_duration:Byte Ptr(ldt:Byte Ptr, duration:Byte Ptr)
 	Function bmx_local_date_time_subtract_duration:Byte Ptr(ldt:Byte Ptr, duration:Byte Ptr)
-	Function bmx_local_date_time_delete(ldt:Byte Ptr)
+	Function bmx_local_date_time_free(ldt:Byte Ptr)
 	
 	Function bmx_local_time_period_new:Byte Ptr(ldt1:Byte Ptr, ldt2:Byte Ptr)
 	Function bmx_local_time_period_new_duration:Byte Ptr(ldt:Byte Ptr, duration:Byte Ptr)
-	Function bmx_local_time_period_delete(ltp:Byte Ptr)
+	Function bmx_local_time_period_free(ltp:Byte Ptr)
 	Function bmx_local_time_period_begin:Byte Ptr(ltp:Byte Ptr)
 	Function bmx_local_time_period_last:Byte Ptr(ltp:Byte Ptr)
 	Function bmx_local_time_period_end:Byte Ptr(ltp:Byte Ptr)

@@ -87,7 +87,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(1984, 4, 23)
@@ -120,7 +120,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.localDay()
@@ -147,7 +147,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.fromString("2004-09-25")
@@ -166,7 +166,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.fromUndelimitedString("19760130")
@@ -218,7 +218,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2007, Jul, 17)
@@ -237,7 +237,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2007, Jul, 17)
@@ -256,7 +256,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2007, Jul, 17)
@@ -275,7 +275,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2006, Dec, 24)
@@ -300,7 +300,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.localDay()
@@ -327,7 +327,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.localDay()
@@ -346,7 +346,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.localDay()
@@ -366,7 +366,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.localDay()
@@ -385,7 +385,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.localDay()
@@ -404,7 +404,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.localDay()
@@ -423,7 +423,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d1:TDate = TDate.Create(2000, Jan, 1)
@@ -529,7 +529,7 @@ Type TDate
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.localDay()
@@ -549,7 +549,7 @@ Type TDate
 	' deletes the date instance
 	Method Delete()
 		If datePtr Then
-			bmx_datetime_delete(datePtr)
+			bmx_datetime_free(datePtr)
 			datePtr = Null
 		End If
 	End Method
@@ -574,7 +574,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local startDate:TDate = TDate.Create(2007, 1, 1)
@@ -596,7 +596,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local startDate:TDate = TDate.localDay()
@@ -630,7 +630,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local startDate:TDate = TDate.Create(2007, Feb, 1)
@@ -656,7 +656,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local startDate:TDate = TDate.localDay()
@@ -677,7 +677,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local startDate:TDate = TDate.localDay()
@@ -698,7 +698,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local startDate:TDate = TDate.localDay()
@@ -719,7 +719,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local startDate:TDate = TDate.localDay()
@@ -740,7 +740,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2007, 2, 1), TDate.Create(2007, 3, 1))
@@ -761,7 +761,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2007, 1, 1))
@@ -784,7 +784,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2007, 1, 1))
@@ -807,7 +807,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2007, 1, 1))
@@ -830,7 +830,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2007, 1, 1))
@@ -855,7 +855,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 1, 1))
@@ -878,7 +878,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 1, 1))
@@ -898,7 +898,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 1, 1))
@@ -918,7 +918,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 1, 1))
@@ -951,7 +951,7 @@ Type TDatePeriod
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2006, 10, 1))
@@ -1012,7 +1012,7 @@ Type TDatePeriod
 	
 	Method Delete()
 		If datePeriodPtr Then
-			bmx_datetime_period_delete(datePeriodPtr)
+			bmx_datetime_period_free(datePeriodPtr)
 			datePeriodPtr = Null
 		End If
 	End Method
@@ -1121,7 +1121,7 @@ Type TDateIterator Extends TDate Abstract
 
 	Method Delete()
 		If datePtr Then
-			bmx_datetime_iter_delete(datePtr)
+			bmx_datetime_iter_free(datePtr)
 			datePtr = Null
 		End If
 	End Method
@@ -1195,7 +1195,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2002, Jan, 1)
@@ -1227,7 +1227,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local t:TTime = TTime.CreateLocal()
@@ -1246,7 +1246,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local t:TTime = TTime.CreateUniversal()
@@ -1306,7 +1306,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2002, Jan, 10)
@@ -1325,7 +1325,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2002, Jan, 10)
@@ -1366,7 +1366,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2002, Jan, 1)
@@ -1389,7 +1389,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2002, Jan, 1)
@@ -1412,7 +1412,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2002, Jan, 1)
@@ -1435,7 +1435,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2002, Jan, 1)
@@ -1458,7 +1458,7 @@ Type TTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local d:TDate = TDate.Create(2002, Jan, 1)
@@ -1519,7 +1519,7 @@ Type TTime
 	
 	Method Delete()
 		If ptimePtr Then
-			bmx_ptime_delete(ptimePtr)
+			bmx_ptime_free(ptimePtr)
 			ptimePtr = Null
 		End If
 	End Method
@@ -1558,7 +1558,7 @@ Type TTimeDuration
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local td:TTimeDuration = TTimeDuration.Hour(10)
@@ -1577,7 +1577,7 @@ Type TTimeDuration
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local td:TTimeDuration = TTimeDuration.Minute(7)
@@ -1596,7 +1596,7 @@ Type TTimeDuration
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local td:TTimeDuration = TTimeDuration.Second(45)
@@ -1615,7 +1615,7 @@ Type TTimeDuration
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local td:TTimeDuration = TTimeDuration.Millisecond(180)
@@ -1695,7 +1695,7 @@ Type TTimeDuration
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local td:TTimeDuration = TDHours(12)
@@ -1729,7 +1729,7 @@ Type TTimeDuration
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local td:TTimeDuration = TDHours(12).add(TDMinutes(35)).add(TDSeconds(12))
@@ -1748,7 +1748,7 @@ Type TTimeDuration
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local td1:TTimeDuration = TTimeDuration.Create(12, 30, 20)
@@ -1768,7 +1768,7 @@ Type TTimeDuration
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local td:TTimeDuration = TTimeDuration.Create(18, 30) ' 18 hours and 30 mins
@@ -1787,7 +1787,7 @@ Type TTimeDuration
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local td:TTimeDuration = TTimeDuration.Create(4, 10, 6)
@@ -1847,7 +1847,7 @@ Type TTimeDuration
 
 	Method Delete()
 		If durationPtr Then
-			bmx_time_duration_delete(durationPtr)
+			bmx_time_duration_free(durationPtr)
 			durationPtr = Null
 		End If
 	End Method
@@ -2026,7 +2026,7 @@ Type TTimePeriod
 
 	Method Delete()
 		If timePeriodPtr Then
-			bmx_time_period_delete(timePeriodPtr)
+			bmx_time_period_free(timePeriodPtr)
 			timePeriodPtr = Null
 		End If
 	End Method
@@ -2090,6 +2090,12 @@ Type TTZDatabase
 ' TODO !!
 	End Method
 	
+	Method Delete()
+		If tzDatabasePtr Then
+			bmx_tz_database_free(tzDatabasePtr)
+			tzDatabasePtr = Null
+		End If
+	End Method
 	
 End Type
 
@@ -2147,7 +2153,7 @@ Type TLocalDateTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local pt:TTime = TTime.Create(TDate.Create(2004, Nov, 5), TDHours(10))
@@ -2170,7 +2176,7 @@ Type TLocalDateTime
 	<pre>
 	SuperStrict
 	
-	Framework BaH.DateTime
+	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
 	Local pt:TTime = TTime.Create(TDate.Create(2004, Nov, 5), TDHours(10))
@@ -2283,7 +2289,7 @@ Type TLocalDateTime
 	
 	Method Delete()
 		If localDateTimePtr Then
-			bmx_local_date_time_delete(localDateTimePtr)
+			bmx_local_date_time_free(localDateTimePtr)
 			localDateTimePtr = Null
 		End If
 	End Method
@@ -2451,7 +2457,7 @@ Type TLocalTimePeriod
 	
 	Method Delete()
 		If localTimePeriodPtr Then
-			bmx_local_time_period_delete(localTimePeriodPtr)
+			bmx_local_time_period_free(localTimePeriodPtr)
 			localTimePeriodPtr = Null
 		End If
 	End Method
@@ -2663,7 +2669,7 @@ Type TPartialDate Extends TYearBasedGenerator
 
 	Method Delete()
 		If ybgPtr Then
-			bmx_partial_date_delete(ybgPtr)
+			bmx_partial_date_free(ybgPtr)
 			ybgPtr = Null
 		End If
 	End Method
@@ -2696,7 +2702,7 @@ Type TLastDayOfWeekInMonth Extends TYearBasedGenerator
 
 	Method Delete()
 		If ybgPtr Then
-			bmx_last_day_of_week_in_month_delete(ybgPtr)
+			bmx_last_day_of_week_in_month_free(ybgPtr)
 			ybgPtr = Null
 		End If
 	End Method
@@ -2729,7 +2735,7 @@ Type TFirstDayOfWeekInMonth Extends TYearBasedGenerator
 
 	Method Delete()
 		If ybgPtr Then
-			bmx_first_day_of_week_in_month_delete(ybgPtr)
+			bmx_first_day_of_week_in_month_free(ybgPtr)
 			ybgPtr = Null
 		End If
 	End Method
@@ -2765,7 +2771,7 @@ Type TNthDayOfWeekInMonth Extends TYearBasedGenerator
 
 	Method Delete()
 		If ybgPtr Then
-			bmx_nth_day_of_week_in_month_delete(ybgPtr)
+			bmx_nth_day_of_week_in_month_free(ybgPtr)
 			ybgPtr = Null
 		End If
 	End Method
@@ -2802,7 +2808,7 @@ Type TFirstDayOfWeekAfter
 
 	Method Delete()
 		If ybgPtr Then
-			bmx_first_day_of_week_after_delete(ybgPtr)
+			bmx_first_day_of_week_after_free(ybgPtr)
 			ybgPtr = Null
 		End If
 	End Method
@@ -2839,7 +2845,7 @@ Type TFirstDayOfWeekBefore
 
 	Method Delete()
 		If ybgPtr Then
-			bmx_first_day_of_week_before_delete(ybgPtr)
+			bmx_first_day_of_week_before_free(ybgPtr)
 			ybgPtr = Null
 		End If
 	End Method

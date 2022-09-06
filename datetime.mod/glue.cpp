@@ -46,7 +46,7 @@ extern "C" {
 	date * bmx_datetime_universalday();
 
 	date * bmx_datetime_newdate(int year, int month, int day);	
-	void bmx_datetime_delete(date * d);
+	void bmx_datetime_free(date * d);
 
 	int bmx_datetime_before(date * myDate, date * yourDate);
 	int bmx_datetime_after(date * myDate, date * yourDate);
@@ -71,7 +71,7 @@ extern "C" {
 	date_period * bmx_datetime_period_datedate(date * d1, date * d2);
 	date_period * bmx_datetime_period_withdays(date * d, int length);
 	void bmx_datetime_period_shift(date_period * p, int length);
-	void bmx_datetime_period_delete(date_period * p);
+	void bmx_datetime_period_free(date_period * p);
 	
 	date * bmx_datetime_period_begin(date_period * p);
 	date * bmx_datetime_period_last(date_period * p);
@@ -104,7 +104,7 @@ extern "C" {
 	day_iterator * bmx_datetime_dayiter(date * d, int offset);
 	month_iterator * bmx_datetime_monthiter(date * d, int offset);
 	year_iterator * bmx_datetime_yeariter(date * d, int offset);
-	void bmx_datetime_iter_delete(date_iterator * d);
+	void bmx_datetime_iter_free(date_iterator * d);
 
 	int bmx_datetime_iter_before(date_iterator * myDate, date * yourDate);
 	int bmx_datetime_iter_after(date_iterator * myDate, date * yourDate);
@@ -127,7 +127,7 @@ extern "C" {
 	BBString * bmx_datetime_iter_asformat(date_iterator * d, BBString * format, std::locale * loc, date_facet * facet);
 	
 	time_duration * bmx_time_duration(int hours, int minutes, int seconds, int fraction);
-	void bmx_time_duration_delete(time_duration * d);
+	void bmx_time_duration_free(time_duration * d);
 	time_duration * bmx_time_duration_new_hours(int value);
 	time_duration * bmx_time_duration_new_minutes(int value);
 	time_duration * bmx_time_duration_new_seconds(int value);
@@ -155,7 +155,7 @@ extern "C" {
 	int bmx_time_num_fractional_digits();
 	
 	ptime * bmx_ptime_new(date * d, time_duration * t);
-	void bmx_ptime_delete(ptime * p);
+	void bmx_ptime_free(ptime * p);
 	ptime * bmx_ptime_local_new();
 	ptime * bmx_ptime_universal_new();
 	ptime * bmx_ptime_local_microsecond_new();
@@ -179,13 +179,13 @@ extern "C" {
 
 	partial_date * bmx_partial_date_new(int day, int month);
 	date * bmx_partial_date_get_date(partial_date *  p, int year);
-	void bmx_partial_date_delete(partial_date *  p);
+	void bmx_partial_date_free(partial_date *  p);
 	last_day_of_the_week_in_month * bmx_last_day_of_week_in_month_new(int weekday, int month);
 	date * bmx_last_day_of_week_in_month_get_date(last_day_of_the_week_in_month *  p, int year);
-	void bmx_last_day_of_week_in_month_delete(last_day_of_the_week_in_month *  p);
+	void bmx_last_day_of_week_in_month_free(last_day_of_the_week_in_month *  p);
 	first_day_of_the_week_in_month * bmx_first_day_of_week_in_month_new(int weekday, int month);
 	date * bmx_first_day_of_week_in_month_get_date(first_day_of_the_week_in_month *  p, int year);
-	void bmx_first_day_of_week_in_month_delete(first_day_of_the_week_in_month *  p);
+	void bmx_first_day_of_week_in_month_free(first_day_of_the_week_in_month *  p);
 	
 	BBString * bmx_weekday_to_string(int wd);
 	
@@ -199,7 +199,7 @@ extern "C" {
 	time_period * bmx_time_period_timetime(ptime * p1, ptime * p2);
 	time_period * bmx_time_period_withduration(ptime * p, time_duration * d);
 	void bmx_time_period_shift(time_period * tp, time_duration * d);
-	void bmx_time_period_delete(time_period * tp);
+	void bmx_time_period_free(time_period * tp);
 	ptime * bmx_time_period_begin(time_period * tp);
 	ptime * bmx_time_period_last(time_period * tp);
 	ptime * bmx_time_period_end(time_period * tp);
@@ -231,6 +231,7 @@ extern "C" {
 	tz_database * bmx_tz_database();
 	tz_database * bmx_tz_load_from_file(BBString * filename);
 	MaxTimeZone * bmx_tz_time_zone_from_region(tz_database * db, BBString * id);
+	void bmx_tz_database_free(tz_database * db);
 	
 	local_date_time * bmx_local_date_time_new_sec_clock(MaxTimeZone * tz);
 	local_date_time * bmx_local_date_time_new_time(ptime * p, MaxTimeZone * tz);
@@ -256,14 +257,14 @@ extern "C" {
 	
 	nth_day_of_the_week_in_month * bmx_nth_day_of_week_in_month_new(int nth, int weekday, int month);
 	date * bmx_nth_day_of_week_in_month_get_date(nth_day_of_the_week_in_month *  p, int year);
-	void bmx_nth_day_of_week_in_month_delete(nth_day_of_the_week_in_month *  p);
+	void bmx_nth_day_of_week_in_month_free(nth_day_of_the_week_in_month *  p);
 
 	first_day_of_the_week_after * bmx_first_day_of_week_after_new(int weekday);
 	date * bmx_first_day_of_week_after_get_date(first_day_of_the_week_after *  p, date * d);
-	void bmx_first_day_of_week_after_delete(first_day_of_the_week_after *  p);
+	void bmx_first_day_of_week_after_free(first_day_of_the_week_after *  p);
 	first_day_of_the_week_before * bmx_first_day_of_week_before_new(int weekday);
 	date * bmx_first_day_of_week_before_get_date(first_day_of_the_week_before *  p, date * d);
-	void bmx_first_day_of_week_before_delete(first_day_of_the_week_before *  p);
+	void bmx_first_day_of_week_before_free(first_day_of_the_week_before *  p);
 
 	int bmx_days_until_weekday(date * d, int weekday);
 	int bmx_days_before_weekday(date * d, int weekday);
@@ -288,11 +289,11 @@ extern "C" {
 	local_date_time * bmx_local_date_time_subtract_years(local_date_time * ldt, int value);
 	local_date_time * bmx_local_date_time_add_duration(local_date_time * ldt, time_duration * td);
 	local_date_time * bmx_local_date_time_subtract_duration(local_date_time * ldt, time_duration * td);
-	void bmx_local_date_time_delete(local_date_time * ldt);
+	void bmx_local_date_time_free(local_date_time * ldt);
 	
 	local_time_period * bmx_local_time_period_new(local_date_time * ldt1, local_date_time * ldt2);
 	local_time_period * bmx_local_time_period_new_duration(local_date_time * ldt, time_duration * d);
-	void bmx_local_time_period_delete(local_time_period * ldt);
+	void bmx_local_time_period_free(local_time_period * ldt);
 	local_date_time * bmx_local_time_period_begin(local_time_period * ldt);
 	local_date_time * bmx_local_time_period_last(local_time_period * ldt);
 	local_date_time * bmx_local_time_period_end(local_time_period * ldt);
@@ -343,7 +344,7 @@ date * bmx_datetime_newdate(int year, int month, int day) {
 	}
 }
 
-void bmx_datetime_delete(date * d) {
+void bmx_datetime_free(date * d) {
 	delete d;
 }
 
@@ -453,7 +454,7 @@ void bmx_datetime_period_shift(date_period * p, int length) {
 	p->shift(days(length));
 }
 
-void bmx_datetime_period_delete(date_period * p) {
+void bmx_datetime_period_free(date_period * p) {
 	delete p;
 }
 
@@ -568,7 +569,7 @@ year_iterator * bmx_datetime_yeariter(date * d, int offset) {
 	return new year_iterator(*d, offset);
 }
 
-void bmx_datetime_iter_delete(date_iterator * d) {
+void bmx_datetime_iter_free(date_iterator * d) {
 	delete d;
 }
 
@@ -677,7 +678,7 @@ time_duration * bmx_time_duration(int hours, int minutes, int seconds, int fract
 	return new time_duration(hours, minutes, seconds, fraction);
 }
 
-void bmx_time_duration_delete(time_duration * d) {
+void bmx_time_duration_free(time_duration * d) {
 	delete d;
 }
 
@@ -788,7 +789,7 @@ ptime * bmx_ptime_new(date * d, time_duration * t) {
 	return new ptime(*d, *t);
 }
 
-void bmx_ptime_delete(ptime * p) {
+void bmx_ptime_free(ptime * p) {
 	delete p;
 }
 
@@ -886,7 +887,7 @@ date * bmx_partial_date_get_date(partial_date *  p, int year) {
 	return new date(p->get_date(year));
 }
 
-void bmx_partial_date_delete(partial_date *  p) {
+void bmx_partial_date_free(partial_date *  p) {
 	delete p;
 }
 
@@ -898,7 +899,7 @@ date * bmx_last_day_of_week_in_month_get_date(last_day_of_the_week_in_month *  p
 	return new date(p->get_date(year));
 }
 
-void bmx_last_day_of_week_in_month_delete(last_day_of_the_week_in_month *  p) {
+void bmx_last_day_of_week_in_month_free(last_day_of_the_week_in_month *  p) {
 	delete p;
 }
 
@@ -910,7 +911,7 @@ date * bmx_first_day_of_week_in_month_get_date(first_day_of_the_week_in_month * 
 	return new date(p->get_date(year));
 }
 
-void bmx_first_day_of_week_in_month_delete(first_day_of_the_week_in_month *  p) {
+void bmx_first_day_of_week_in_month_free(first_day_of_the_week_in_month *  p) {
 	delete p;
 }
 
@@ -972,7 +973,7 @@ ptime * bmx_time_period_begin(time_period * tp) {
 	return new ptime(tp->begin());
 }
 
-void bmx_time_period_delete(time_period * tp) {
+void bmx_time_period_free(time_period * tp) {
 	delete tp;
 }
 
@@ -1093,6 +1094,10 @@ tz_database * bmx_tz_load_from_file(BBString * filename) {
 	db->load_from_file(std::string(f));
 	bbMemFree(f);
 	return db;
+}
+
+void bmx_tz_database_free(tz_database * db) {
+	delete db;
 }
 
 MaxTimeZone * bmx_tz_time_zone_from_region(tz_database * db, BBString * id) {
@@ -1262,7 +1267,7 @@ date * bmx_nth_day_of_week_in_month_get_date(nth_day_of_the_week_in_month *  p, 
 	return new date(p->get_date(year));
 }
 
-void bmx_nth_day_of_week_in_month_delete(nth_day_of_the_week_in_month *  p) {
+void bmx_nth_day_of_week_in_month_free(nth_day_of_the_week_in_month *  p) {
 	delete p;
 }
 
@@ -1274,7 +1279,7 @@ date * bmx_first_day_of_week_after_get_date(first_day_of_the_week_after *  p, da
 	return new date(p->get_date(*d));
 }
 
-void bmx_first_day_of_week_after_delete(first_day_of_the_week_after *  p) {
+void bmx_first_day_of_week_after_free(first_day_of_the_week_after *  p) {
 	delete p;
 }
 
@@ -1286,7 +1291,7 @@ date * bmx_first_day_of_week_before_get_date(first_day_of_the_week_before *  p, 
 	return new date(p->get_date(*d));
 }
 
-void bmx_first_day_of_week_before_delete(first_day_of_the_week_before *  p) {
+void bmx_first_day_of_week_before_free(first_day_of_the_week_before *  p) {
 	delete p;
 }
 
@@ -1371,7 +1376,7 @@ local_date_time * bmx_local_date_time_subtract_duration(local_date_time * ldt, t
 	return new local_date_time(*ldt - *td);
 }
 
-void bmx_local_date_time_delete(local_date_time * ldt) {
+void bmx_local_date_time_free(local_date_time * ldt) {
 	delete ldt;
 }
 
@@ -1383,7 +1388,7 @@ local_time_period * bmx_local_time_period_new_duration(local_date_time * ldt, ti
 	return new local_time_period(*ldt, *d);
 }
 
-void bmx_local_time_period_delete(local_time_period * ldt) {
+void bmx_local_time_period_free(local_time_period * ldt) {
 	delete ldt;
 }
 
