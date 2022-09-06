@@ -3,7 +3,7 @@ SuperStrict
 Framework Boost.DateTime
 Import BRL.StandardIO
 
-Local d:TDate = TDate.Create(2006, Dec, 24)
+Local d:TDate = New TDate(2006, Dec, 24)
 
 Local year:Int, month:Int, day:Int
 

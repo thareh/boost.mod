@@ -214,6 +214,7 @@ Extern
 	Function bmx_time_period_isless:Int(tp1:Byte Ptr, tp2:Byte Ptr)
 	Function bmx_time_period_isgreater:Int(tp1:Byte Ptr, tp2:Byte Ptr)
 	Function bmx_time_period_isequal:Int(tp1:Byte Ptr, tp2:Byte Ptr)
+	Function bmx_time_period_to_simple_string:String(time:Byte Ptr)
 	
 	Function bmx_posix_time_zone:Byte Ptr(id:String)
 	Function bmx_time_zone_dst_zone_abbrev:String(tz:Byte Ptr)
@@ -232,6 +233,8 @@ Extern
 	Function bmx_tz_load_from_file:Byte Ptr(filename:String)
 	Function bmx_tz_time_zone_from_region:Byte Ptr(db:Byte Ptr, id:String)
 	Function bmx_tz_database_free(db:Byte Ptr)
+	Function bmx_tz_database_add_record(db:Byte Ptr, id:String, zone:Byte Ptr)
+	Function bmx_tz_database_region_list:String[](db:Byte Ptr)
 	
 	Function bmx_local_date_time_new_sec_clock:Byte Ptr(zone:Byte Ptr)
 	Function bmx_local_date_time_new_time:Byte Ptr(time:Byte Ptr, zone:Byte Ptr)

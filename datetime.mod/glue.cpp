@@ -214,6 +214,7 @@ extern "C" {
 	int bmx_time_period_isless(time_period * tp1, time_period * tp2);
 	int bmx_time_period_isgreater(time_period * tp1, time_period * tp2);
 	int bmx_time_period_isequal(time_period * tp1, time_period * tp2);
+	BBString * bmx_time_period_to_simple_string(time_period * tp);
 	
 	MaxTimeZone * bmx_posix_time_zone(BBString * id);
 	BBString * bmx_time_zone_dst_zone_abbrev(MaxTimeZone * tz);
@@ -232,6 +233,8 @@ extern "C" {
 	tz_database * bmx_tz_load_from_file(BBString * filename);
 	MaxTimeZone * bmx_tz_time_zone_from_region(tz_database * db, BBString * id);
 	void bmx_tz_database_free(tz_database * db);
+	void bmx_tz_database_add_record(tz_database * db, BBString * id, MaxTimeZone * tz);
+	BBArray * bmx_tz_database_region_list(tz_database * db);
 	
 	local_date_time * bmx_local_date_time_new_sec_clock(MaxTimeZone * tz);
 	local_date_time * bmx_local_date_time_new_time(ptime * p, MaxTimeZone * tz);
@@ -1029,6 +1032,10 @@ int bmx_time_period_isequal(time_period * tp1, time_period * tp2) {
 	return *tp1 == *tp2;
 }
 
+BBString * bmx_time_period_to_simple_string(time_period * tp) {
+	return bbStringFromUTF8String((const unsigned char*)to_simple_string(*tp).c_str());
+}
+
 ptime * bmx_ptime_from_time_t(std::time_t * t) {
 	return new ptime(from_time_t(*t));
 }
@@ -1098,6 +1105,23 @@ tz_database * bmx_tz_load_from_file(BBString * filename) {
 
 void bmx_tz_database_free(tz_database * db) {
 	delete db;
+}
+
+void bmx_tz_database_add_record(tz_database * db, BBString * id, MaxTimeZone * tz) {
+	char * n = (char*)bbStringToUTF8String(id);
+	db->add_record(std::string(n), tz->timeZone);
+	bbMemFree(n);
+}
+
+BBArray * bmx_tz_database_region_list(tz_database * db) {
+	std::vector<std::string> list = db->region_list();
+	int n=list.size();
+	BBArray *p = bbArrayNew1D( "$",n );
+	BBString **s = (BBString**)BBARRAYDATA( p,p->dims );
+	for( int i = 0; i < n; ++i ){
+		s[i] = bbStringFromUTF8String((unsigned char*)list[i].c_str());
+	}
+	return p;
 }
 
 MaxTimeZone * bmx_tz_time_zone_from_region(tz_database * db, BBString * id) {

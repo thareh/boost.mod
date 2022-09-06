@@ -13,10 +13,10 @@ Local m:Int = Min(12, Max(1, Input("Enter Month: ").toInt()))
 ' Use the calendar to get the last day of the month
 Local eomDay:Int = EndOfMonthDay(y, m)
 
-Local endOfMonth:TDate = TDate.Create(y, m, eomDay)
+Local endOfMonth:TDate = New TDate(y, m, eomDay)
 
 ' construct an iterator starting with first day of the month
-Local ditr:TDateDayIterator = TDateDayIterator.CreateIterator(TDate.Create(y, m, 1))
+Local ditr:TDateDayIterator = New TDateDayIterator(New TDate(y, m, 1))
 
 ' loop thru the days and print each one
 While Not ditr.isAfter(endOfMonth)

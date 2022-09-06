@@ -30,10 +30,12 @@ bbdoc: Boost Locale
 End Rem
 Module Boost.Locale
 
-ModuleInfo "Version: 1.03"
+ModuleInfo "Version: 1.04"
 ModuleInfo "License: BSD"
 ModuleInfo "Copyright: Wrapper - 2013-2022 Bruce A Henderson"
 
+ModuleInfo "History: 1.04"
+ModuleInfo "History: Refactored."
 ModuleInfo "History: 1.03"
 ModuleInfo "History: Update to Boost 1.80."
 ModuleInfo "History: 1.02"
@@ -59,7 +61,7 @@ Import "common.bmx"
 
 
 Private
-Global localeGenerator:TBLGenerator = New TBLGenerator.Create()
+Global localeGenerator:TBLGenerator = New TBLGenerator()
 
 Public
 
@@ -70,19 +72,18 @@ Type TBLGenerator
 
 	Field genPtr:Byte Ptr
 
-	Function CreateGenerator:TBLGenerator()
-		Return New TBLGenerator.Create()
-	End Function
-	
-	Method Create:TBLGenerator()
+	Method New()
 		genPtr = bmx_boostlocale_generator_create()
-		Return Self
 	End Method
 	
 	Method generate:TBLLocale(id:String)
-		Return TBLLocale._create(bmx_boostlocale_generator_generate(genPtr, id))
+		Return New TBLLocale(_generate(id))
 	End Method
 
+	Private
+	Method _generate:Byte Ptr(id:String)
+		Return bmx_boostlocale_generator_generate(genPtr, id)
+	End Method
 End Type
 
 Rem
@@ -101,7 +102,7 @@ End Rem
 Function SetLocale(locale:Object)
 	If locale Then
 		If String(locale) Then
-			currentLocale = TBLLocale.Create(String(locale))
+			currentLocale = New TBLLocale(String(locale))
 		Else If TBLLocale(locale) Then
 			currentLocale = TBLLocale(locale)
 		End If
@@ -115,18 +116,19 @@ Type TBLLocale
 
 	Field localePtr:Byte Ptr
 	
-	Function Create:TBLLocale(locale:String)
-		Return localeGenerator.generate(locale)
-	End Function
-	
-	Function _create:TBLLocale(localePtr:Byte Ptr)
-		If localePtr Then
-			Local this:TBLLocale = New TBLLocale
-			this.localePtr = localePtr
-			Return this
-		End If
-		Return Null
-	End Function
+	Private
+	Method New()
+	End Method
+
+	Method New(localePtr:Byte Ptr)
+		Self.localePtr = localePtr
+	End Method
+
+	Public
+
+	Method New(locale:String)
+		New(localeGenerator._generate(locale))
+	End Method
 
 	Method name:String()
 		Return bmx_boostlocale_locale_name(localePtr)

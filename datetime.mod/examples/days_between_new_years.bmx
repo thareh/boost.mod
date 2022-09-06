@@ -11,7 +11,7 @@ Import BRL.StandardIO
 
 Local today:TDate = TDate.localDay()
 
-Local newYearsDay:TPartialDate = TPartialDate.Create(1, Jan)
+Local newYearsDay:TPartialDate = New TPartialDate(1, Jan)
 
 ' Subtract two dates to get a duration
 Local daysSinceYearStart:Int = today.subtractDate(newYearsDay.getDate(today.year()))

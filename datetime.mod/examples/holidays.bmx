@@ -29,19 +29,19 @@ Local year:Int = Input("Enter year : ").toInt()
 
 Local holidays:TList = New TList
 
-holidays.addLast(TPartialDate.Create(1, Jan)) ' Western New Year
-holidays.addLast(TPartialDate.Create(4, Jul)) ' US Independence Day
-holidays.addLast(TPartialDate.Create(25, Dec)) ' Christmas Day
+holidays.addLast(New TPartialDate(1, Jan)) ' Western New Year
+holidays.addLast(New TPartialDate(4, Jul)) ' US Independence Day
+holidays.addLast(New TPartialDate(25, Dec)) ' Christmas Day
 
 
 ' US labor day
-holidays.addLast(TNthDayOfWeekInMonth.Create(First, Monday, Sep))
+holidays.addLast(New TNthDayOfWeekInMonth(First, Monday, Sep))
 ' Martin Luther King Day
-holidays.addLast(TNthDayOfWeekInMonth.Create(Third, Monday, Jan))
+holidays.addLast(New TNthDayOfWeekInMonth(Third, Monday, Jan))
 ' Presidents day
-holidays.addLast(TNthDayOfWeekInMonth.Create(Second, Tuesday, Feb))
+holidays.addLast(New TNthDayOfWeekInMonth(Second, Tuesday, Feb))
 ' Thanksgiving
-holidays.addLast(TNthDayOfWeekInMonth.Create(Fourth, Thursday, Nov))
+holidays.addLast(New TNthDayOfWeekInMonth(Fourth, Thursday, Nov))
 
 
 Local allHolidays:TList = New TList

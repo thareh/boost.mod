@@ -3,6 +3,6 @@ SuperStrict
 Framework Boost.DateTime
 Import BRL.StandardIO
 
-Local t:TTime = TTime.CreateUniversal()
+Local t:TTime = New TTime.CreateUniversal()
 
 Print t.toString()

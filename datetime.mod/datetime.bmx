@@ -30,11 +30,13 @@ bbdoc: Date Time
 End Rem
 Module Boost.DateTime
 
-ModuleInfo "Version: 1.07"
+ModuleInfo "Version: 1.08"
 ModuleInfo "License: BSD"
 ModuleInfo "Copyright: Wrapper - 2007-2022 Bruce A Henderson"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.08"
+ModuleInfo "History: Refactored"
 ModuleInfo "History: 1.07"
 ModuleInfo "History: Updated to Boost 1.80"
 ModuleInfo "History: 1.06"
@@ -80,7 +82,18 @@ End Rem
 Type TDate
 
 	Field datePtr:Byte Ptr
-	
+
+	Private
+	Method New(datePtr:Byte Ptr)
+		Self.datePtr = datePtr
+	End Method
+
+	Public
+
+	Method New()
+		New(bmx_datetime_localday())
+	End Method
+
 	Rem
 	bbdoc: Creates a new #TDate.
 	about:
@@ -90,29 +103,17 @@ Type TDate
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(1984, 4, 23)
+	Local d:TDate = New TDate(1984, 4, 23)
 	
 	Print d.toString()
 	
-	Print TDate.Create(1990, Mar, 12).toString()
+	Print New TDate(1990, Mar, 12).toString()
 	</pre>
 	<a href="../examples/tdate_create.bmx">Example source</a>
 	End Rem
-	Function Create:TDate(year:Int, Month:Int, day:Int)
-		Return _create(bmx_datetime_newdate(year, Month, day))
-	End Function
-	
-	Function _create:TDate(datePtr:Byte Ptr)
-		If datePtr Then
-			Local this:TDate = New TDate
-			
-			this.datePtr = datePtr
-			
-			Return this
-		End If
-		
-		Return Null
-	End Function
+	Method New(year:Int, Month:Int, day:Int)
+		New (bmx_datetime_newdate(year, Month, day))
+	End Method
 	
 	Rem
 	bbdoc: Creates a new #TDate for the current local time.
@@ -130,14 +131,14 @@ Type TDate
 	<a href="../examples/tdate_localDay.bmx">Example source</a>
 	End Rem
 	Function localDay:TDate()
-		Return _create(bmx_datetime_localday())
+		Return New TDate(bmx_datetime_localday())
 	End Function
 	
 	Rem
 	bbdoc: Creates a new #TDate for the current UCT time.
 	End Rem
 	Function universalDay:TDate()
-		Return _create(bmx_datetime_universalday())
+		Return New TDate(bmx_datetime_universalday())
 	End Function
 	
 	Rem
@@ -157,7 +158,7 @@ Type TDate
 	<a href="../examples/tdate_fromString.bmx">Example source</a>
 	End Rem
 	Function FromString:TDate(date:String)
-		Return _create(bmx_datetime_fromstring(date))
+		Return New TDate(bmx_datetime_fromstring(date))
 	End Function
 	
 	Rem
@@ -176,7 +177,7 @@ Type TDate
 	<a href="../examples/tdate_fromUndelimitedString.bmx">Example source</a>
 	End Rem
 	Function fromUndelimitedString:TDate(date:String)
-		Return _create(bmx_datetime_fromundelimitedstring(date))
+		Return New TDate(bmx_datetime_fromundelimitedstring(date))
 	End Function
 
 	Rem
@@ -221,7 +222,7 @@ Type TDate
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2007, Jul, 17)
+	Local d:TDate = New TDate(2007, Jul, 17)
 	
 	Print d.year()
 	</pre>
@@ -240,7 +241,7 @@ Type TDate
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2007, Jul, 17)
+	Local d:TDate = New TDate(2007, Jul, 17)
 	
 	Print d.month()
 	</pre>
@@ -259,7 +260,7 @@ Type TDate
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2007, Jul, 17)
+	Local d:TDate = New TDate(2007, Jul, 17)
 	
 	Print d.day()
 	</pre>
@@ -278,7 +279,7 @@ Type TDate
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2006, Dec, 24)
+	Local d:TDate = New TDate(2006, Dec, 24)
 	
 	Local year:Int, month:Int, day:Int
 	
@@ -357,7 +358,7 @@ Type TDate
 	<a href="../examples/tdate_lastDayOfMonth.bmx">Example source</a>
 	End Rem
 	Method lastDayOfMonth:TDate()
-		Return _create(bmx_datetime_end_of_month(datePtr))
+		Return New TDate(bmx_datetime_end_of_month(datePtr))
 	End Method
 	
 	Rem
@@ -395,7 +396,7 @@ Type TDate
 	<a href="../examples/tdate_add.bmx">Example source</a>
 	End Rem
 	Method add:TDate(days:Int)
-		Return _create(bmx_datetime_date_add(datePtr, days))
+		Return New TDate(bmx_datetime_date_add(datePtr, days))
 	End Method
 	
 	Rem
@@ -414,7 +415,7 @@ Type TDate
 	<a href="../examples/tdate_subtract.bmx">Example source</a>
 	End Rem
 	Method subtract:TDate(days:Int)
-		Return _create(bmx_datetime_date_subtract(datePtr, days))
+		Return New TDate(bmx_datetime_date_subtract(datePtr, days))
 	End Method
 	
 	Rem
@@ -426,7 +427,7 @@ Type TDate
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d1:TDate = TDate.Create(2000, Jan, 1)
+	Local d1:TDate = New TDate(2000, Jan, 1)
 	Local d2:TDate = TDate.localDay()
 	
 	Print d2.subtractDate(d1)
@@ -470,7 +471,7 @@ Type TDate
 	about: @offset is the number of days moved in each forward/backward.
 	End Rem
 	Method dayIterator:TDateDayIterator(offset:Int = 1)
-		Return TDateDayIterator.CreateIterator(Self, offset)
+		Return New TDateDayIterator(Self, offset)
 	End Method
 
 	Rem
@@ -478,7 +479,7 @@ Type TDate
 	about: @offset is the number of months moved in each forward/backward.
 	End Rem
 	Method monthIterator:TDateMonthIterator(offset:Int = 1)
-		Return TDateMonthIterator.CreateIterator(Self, offset)
+		Return New TDateMonthIterator(Self, offset)
 	End Method
 
 	Rem
@@ -486,7 +487,7 @@ Type TDate
 	about: @offset is the number of years moved in each forward/backward.
 	End Rem
 	Method yearIterator:TDateYearIterator(offset:Int = 1)
-		Return TDateYearIterator.CreateIterator(Self, offset)
+		Return New TDateYearIterator(Self, offset)
 	End Method
 	
 	Rem
@@ -568,6 +569,16 @@ Type TDatePeriod
 	
 	Field datePeriodPtr:Byte Ptr
 	
+	Private
+	Method New()
+	End Method
+
+	Method New(datePeriodPtr:Byte Ptr)
+		Self.datePeriodPtr = datePeriodPtr
+	End Method
+
+	Public
+
 	Rem
 	bbdoc: Create a period as [beginDate, endDate].
 	about: If endDate is <= beginDate then the period will be invalid.
@@ -577,18 +588,18 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local startDate:TDate = TDate.Create(2007, 1, 1)
+	Local startDate:TDate = New TDate(2007, 1, 1)
 	Local endDate:TDate = TDate.localDay()
 	
-	Local p:TDatePeriod = TDatePeriod.Create(startDate, endDate)
+	Local p:TDatePeriod = New TDatePeriod(startDate, endDate)
 	
 	Print p.toString()
 	</pre>
 	<a href="../examples/tdateperiod_create.bmx">Example source</a>
 	End Rem
-	Function Create:TDatePeriod(beginDate:TDate, endDate:TDate)
-		Return _create(bmx_datetime_period_datedate(beginDate.datePtr, endDate.datePtr))
-	End Function
+	Method New(beginDate:TDate, endDate:TDate)
+		New(bmx_datetime_period_datedate(beginDate.datePtr, endDate.datePtr))
+	End Method
 	
 	Rem
 	bbdoc: Create a period as [beginDate, beginDate + length] where end point would be beginDate + length.
@@ -601,28 +612,15 @@ Type TDatePeriod
 	
 	Local startDate:TDate = TDate.localDay()
 	
-	Local p:TDatePeriod = TDatePeriod.CreateWithDays(startDate, 150)
+	Local p:TDatePeriod = New TDatePeriod(startDate, 150)
 	
 	Print p.toString()
 	</pre>
 	<a href="../examples/tdateperiod_createWithDays.bmx">Example source</a>
 	End Rem
-	Function CreateWithDays:TDatePeriod(beginDate:TDate, length:Int)
-		Return _create(bmx_datetime_period_withdays(beginDate.datePtr, length))
-	End Function
-	
-	Function _create:TDatePeriod(datePeriodPtr:Byte Ptr)
-	
-		If datePeriodPtr Then
-			Local this:TDatePeriod = New TDatePeriod
-			
-			this.datePeriodPtr = datePeriodPtr
-			
-			Return this
-		End If
-		
-		Return Null
-	End Function
+	Method New(beginDate:TDate, length:Int)
+		New(bmx_datetime_period_withdays(beginDate.datePtr, length))
+	End Method
 	
 	Rem
 	bbdoc: Add @days to both begin and end.
@@ -633,10 +631,10 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local startDate:TDate = TDate.Create(2007, Feb, 1)
-	Local endDate:TDate = TDate.Create(2007, Mar, 1)
+	Local startDate:TDate = New TDate(2007, Feb, 1)
+	Local endDate:TDate = New TDate(2007, Mar, 1)
 	
-	Local p:TDatePeriod = TDatePeriod.Create(startDate, endDate)
+	Local p:TDatePeriod = New TDatePeriod(startDate, endDate)
 	
 	Print p.toString()
 	
@@ -661,14 +659,14 @@ Type TDatePeriod
 	
 	Local startDate:TDate = TDate.localDay()
 	
-	Local p:TDatePeriod = TDatePeriod.CreateWithDays(startDate, 100)
+	Local p:TDatePeriod = New TDatePeriod(startDate, 100)
 	
 	Print p.begin().toString()
 	</pre>
 	<a href="../examples/tdateperiod_begin.bmx">Example source</a>
 	End Rem
 	Method begin:TDate()
-		Return TDate._create(bmx_datetime_period_begin(datePeriodPtr))
+		Return New TDate(bmx_datetime_period_begin(datePeriodPtr))
 	End Method
 	
 	Rem
@@ -682,14 +680,14 @@ Type TDatePeriod
 	
 	Local startDate:TDate = TDate.localDay()
 	
-	Local p:TDatePeriod = TDatePeriod.CreateWithDays(startDate, 100)
+	Local p:TDatePeriod = New TDatePeriod(startDate, 100)
 	
 	Print p.last().toString()
 	</pre>
 	<a href="../examples/tdateperiod_last.bmx">Example source</a>
 	End Rem
 	Method last:TDate()
-		Return TDate._create(bmx_datetime_period_last(datePeriodPtr))
+		Return New TDate(bmx_datetime_period_last(datePeriodPtr))
 	End Method
 	
 	Rem
@@ -703,14 +701,14 @@ Type TDatePeriod
 	
 	Local startDate:TDate = TDate.localDay()
 	
-	Local p:TDatePeriod = TDatePeriod.CreateWithDays(startDate, 100)
+	Local p:TDatePeriod = New TDatePeriod(startDate, 100)
 	
 	Print p.periodEnd().toString()
 	</pre>
 	<a href="../examples/tdateperiod_periodEnd.bmx">Example source</a>
 	End Rem
 	Method periodEnd:TDate()
-		Return TDate._create(bmx_datetime_period_end(datePeriodPtr))
+		Return New TDate(bmx_datetime_period_end(datePeriodPtr))
 	End Method
 	
 	Rem
@@ -724,7 +722,7 @@ Type TDatePeriod
 	
 	Local startDate:TDate = TDate.localDay()
 	
-	Local p:TDatePeriod = TDatePeriod.CreateWithDays(startDate, 100)
+	Local p:TDatePeriod = New TDatePeriod(startDate, 100)
 	
 	Print p.length()
 	</pre>
@@ -743,8 +741,8 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2007, 2, 1), TDate.Create(2007, 3, 1))
-	Local p2:TDatePeriod = TDatePeriod.Create(TDate.Create(2007, 2, 1), TDate.Create(2007, 1, 1))
+	Local p1:TDatePeriod = New TDatePeriod(New TDate(2007, 2, 1), New TDate(2007, 3, 1))
+	Local p2:TDatePeriod = New TDatePeriod(New TDate(2007, 2, 1), New TDate(2007, 1, 1))
 	
 	Print p1.isNull()
 	Print p2.isNull()
@@ -764,10 +762,10 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2007, 1, 1))
+	Local p:TDatePeriod = New TDatePeriod(New TDate(2006, 1, 1), New TDate(2007, 1, 1))
 	
-	Local goodDate:TDate = TDate.Create(2006, 6, 1)
-	Local badDate:TDate = TDate.create(2005, 1, 1)
+	Local goodDate:TDate = New TDate(2006, 6, 1)
+	Local badDate:TDate = New TDate(2005, 1, 1)
 	
 	Print p.containsDate(goodDate)
 	Print p.containsDate(badDate)
@@ -787,10 +785,10 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2007, 1, 1))
+	Local p:TDatePeriod = New TDatePeriod(New TDate(2006, 1, 1), New TDate(2007, 1, 1))
 	
-	Local pGood:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 4, 4), TDate.Create(2006, 5, 5))
-	Local pBad:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 2, 1))
+	Local pGood:TDatePeriod = New TDatePeriod(New TDate(2006, 4, 4), New TDate(2006, 5, 5))
+	Local pBad:TDatePeriod = New TDatePeriod(New TDate(2006, 10, 1), New TDate(2007, 2, 1))
 	
 	Print p.contains(pGood)
 	Print p.contains(pBad)
@@ -810,10 +808,10 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2007, 1, 1))
+	Local p:TDatePeriod = New TDatePeriod(New TDate(2006, 1, 1), New TDate(2007, 1, 1))
 	
-	Local pGood:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 2, 1))
-	Local pBad:TDatePeriod = TDatePeriod.Create(TDate.Create(2005, 1, 1), TDate.Create(2005, 12, 1))
+	Local pGood:TDatePeriod = New TDatePeriod(New TDate(2006, 10, 1), New TDate(2007, 2, 1))
+	Local pBad:TDatePeriod = New TDatePeriod(New TDate(2005, 1, 1), New TDate(2005, 12, 1))
 	
 	Print p.intersects(pGood)
 	Print p.intersects(pBad)
@@ -833,9 +831,9 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2007, 1, 1))
+	Local p1:TDatePeriod = New TDatePeriod(New TDate(2006, 1, 1), New TDate(2007, 1, 1))
 	
-	Local p2:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 2, 1))
+	Local p2:TDatePeriod = New TDatePeriod(New TDate(2006, 10, 1), New TDate(2007, 2, 1))
 	
 	Local intersection:TDatePeriod = p1.intersection(p2)
 	
@@ -846,7 +844,7 @@ Type TDatePeriod
 	<a href="../examples/tdateperiod_intersection.bmx">Example source</a>
 	End Rem
 	Method intersection:TDatePeriod(period:TDatePeriod)
-		Return _create(bmx_datetime_period_intersection(datePeriodPtr, period.datePeriodPtr))
+		Return New TDatePeriod(bmx_datetime_period_intersection(datePeriodPtr, period.datePeriodPtr))
 	End Method
 	
 	Rem
@@ -858,10 +856,10 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 1, 1))
-	Local p2:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2006, 10, 1))
+	Local p1:TDatePeriod = New TDatePeriod(New TDate(2006, 10, 1), New TDate(2007, 1, 1))
+	Local p2:TDatePeriod = New TDatePeriod(New TDate(2006, 1, 1), New TDate(2006, 10, 1))
 	
-	Local p3:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2006, 9, 1)) ' a gap here!
+	Local p3:TDatePeriod = New TDatePeriod(New TDate(2006, 1, 1), New TDate(2006, 9, 1)) ' a gap here!
 	
 	Print p1.isAdjacent(p2)
 	Print p1.isAdjacent(p3)
@@ -881,10 +879,10 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 1, 1))
+	Local p:TDatePeriod = New TDatePeriod(New TDate(2006, 10, 1), New TDate(2007, 1, 1))
 	
-	Print p.isAfter(TDate.Create(2000, 1, 1))
-	Print p.isAfter(TDate.Create(2008, 1, 1))
+	Print p.isAfter(New TDate(2000, 1, 1))
+	Print p.isAfter(New TDate(2008, 1, 1))
 	</pre>
 	<a href="../examples/tdateperiod_isAfter.bmx">Example source</a>
 	End Rem
@@ -901,10 +899,10 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 1, 1))
+	Local p:TDatePeriod = New TDatePeriod(New TDate(2006, 10, 1), New TDate(2007, 1, 1))
 	
-	Print p.isBefore(TDate.Create(2000, 1, 1))
-	Print p.isBefore(TDate.Create(2008, 1, 1))
+	Print p.isBefore(New TDate(2000, 1, 1))
+	Print p.isBefore(New TDate(2008, 1, 1))
 	</pre>
 	<a href="../examples/tdateperiod_isBefore.bmx">Example source</a>
 	End Rem
@@ -921,10 +919,10 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 10, 1), TDate.Create(2007, 1, 1))
-	Local p2:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 12, 1), TDate.Create(2007, 2, 1))
+	Local p1:TDatePeriod = New TDatePeriod(New TDate(2006, 10, 1), New TDate(2007, 1, 1))
+	Local p2:TDatePeriod = New TDatePeriod(New TDate(2006, 12, 1), New TDate(2007, 2, 1))
 	
-	Local p3:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2006, 5, 1)) ' doesn't overlap !
+	Local p3:TDatePeriod = New TDatePeriod(New TDate(2006, 1, 1), New TDate(2006, 5, 1)) ' doesn't overlap !
 	
 	
 	Local merged:TDatePeriod = p1.merge(p2)
@@ -942,7 +940,7 @@ Type TDatePeriod
 	<a href="../examples/tdateperiod_merge.bmx">Example source</a>
 	End Rem
 	Method merge:TDatePeriod(period:TDatePeriod)
-		Return _create(bmx_datetime_period_merge(datePeriodPtr, period.datePeriodPtr))
+		Return New TDatePeriod(bmx_datetime_period_merge(datePeriodPtr, period.datePeriodPtr))
 	End Method
 	
 	Rem
@@ -954,8 +952,8 @@ Type TDatePeriod
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local p1:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 1, 1), TDate.Create(2006, 10, 1))
-	Local p2:TDatePeriod = TDatePeriod.Create(TDate.Create(2006, 12, 1), TDate.Create(2007, 2, 1))
+	Local p1:TDatePeriod = New TDatePeriod(New TDate(2006, 1, 1), New TDate(2006, 10, 1))
+	Local p2:TDatePeriod = New TDatePeriod(New TDate(2006, 12, 1), New TDate(2007, 2, 1))
 	
 	Local span:TDatePeriod = p1.span(p2)
 	
@@ -966,7 +964,7 @@ Type TDatePeriod
 	<a href="../examples/tdateperiod_span.bmx">Example source</a>
 	End Rem
 	Method span:TDatePeriod(period:TDatePeriod)
-		Return _create(bmx_datetime_period_span(datePeriodPtr, period.datePeriodPtr))
+		Return New TDatePeriod(bmx_datetime_period_span(datePeriodPtr, period.datePeriodPtr))
 	End Method
 	
 	Rem
@@ -1080,7 +1078,7 @@ Type TDateIterator Extends TDate Abstract
 	End Method
 	
 	Method lastDayOfMonth:TDate()
-		Return _create(bmx_datetime_iter_end_of_month(datePtr))
+		Return New TDate(bmx_datetime_iter_end_of_month(datePtr))
 	End Method
 	
 	Method weekNumber:Int()
@@ -1088,11 +1086,11 @@ Type TDateIterator Extends TDate Abstract
 	End Method
 
 	Method add:TDate(duration:Int)
-		Return _create(bmx_datetime_iter_date_add(datePtr, duration))
+		Return New TDate(bmx_datetime_iter_date_add(datePtr, duration))
 	End Method
 	
 	Method subtract:TDate(duration:Int)
-		Return _create(bmx_datetime_iter_date_subtract(datePtr, duration))
+		Return New TDate(bmx_datetime_iter_date_subtract(datePtr, duration))
 	End Method
 	
 	Method subtractDate:Int(date:TDate)
@@ -1136,13 +1134,9 @@ Type TDateDayIterator Extends TDateIterator
 	Rem
 	bbdoc: Creates a new #TDateDayIterator from @date for the step size of @offset days.
 	End Rem
-	Function CreateIterator:TDateDayIterator(date:TDate, offset:Int = 1)
-		Local this:TDateDayIterator = New TDateDayIterator
-		
-		this.datePtr = bmx_datetime_dayiter(date.datePtr, offset)
-		
-		Return this
-	End Function
+	Method New(date:TDate, offset:Int = 1)
+		datePtr = bmx_datetime_dayiter(date.datePtr, offset)
+	End Method
 
 End Type
 
@@ -1154,13 +1148,9 @@ Type TDateMonthIterator Extends TDateIterator
 	Rem
 	bbdoc: Creates a new #TDateMonthIterator from @date for the step size of @offset months.
 	End Rem
-	Function CreateIterator:TDateMonthIterator(date:TDate, offset:Int = 1)
-		Local this:TDateMonthIterator = New TDateMonthIterator
-		
-		this.datePtr = bmx_datetime_monthiter(date.datePtr, offset)
-		
-		Return this
-	End Function
+	Method New(date:TDate, offset:Int = 1)
+		datePtr = bmx_datetime_monthiter(date.datePtr, offset)
+	End Method
 
 End Type
 
@@ -1172,13 +1162,9 @@ Type TDateYearIterator Extends TDateIterator
 	Rem
 	bbdoc: Creates a new #TDateYearIterator from @date for the step size of @offset years.
 	End Rem
-	Function CreateIterator:TDateYearIterator(date:TDate, offset:Int = 1)
-		Local this:TDateYearIterator = New TDateYearIterator
-		
-		this.datePtr = bmx_datetime_yeariter(date.datePtr, offset)
-		
-		Return this
-	End Function
+	Method New(date:TDate, offset:Int = 1)
+		datePtr = bmx_datetime_yeariter(date.datePtr, offset)
+	End Method
 
 End Type
 
@@ -1188,39 +1174,14 @@ End Rem
 Type TTime
 
 	Field ptimePtr:Byte Ptr
-	
-	Rem
-	bbdoc: Constructs a new #TTime from a date and offset.
-	about:
-	<pre>
-	SuperStrict
-	
-	Framework Boost.DateTime
-	Import BRL.StandardIO
-	
-	Local d:TDate = TDate.Create(2002, Jan, 1)
-	Local t:TTime = TTime.Create(d, TDHours(14))
-	
-	Print t.toString()
-	</pre>
-	<a href="../examples/ttime_create.bmx">Example source</a>
-	End Rem
-	Function Create:TTime(date:TDate, offset:TTimeDuration)
-		Return _create(bmx_ptime_new(date.datePtr, offset.durationPtr))
-	End Function
-	
-	Function _create:TTime(ptimePtr:Byte Ptr)
-		If ptimePtr Then
-			Local this:TTime = New TTime
-			
-			this.ptimePtr = ptimePtr
-			
-			Return this
-		End If
-		
-		Return Null
-	End Function
-	
+
+	Private
+	Method New(ptimePtr:Byte Ptr)
+		Self.ptimePtr = ptimePtr
+	End Method
+
+	Public
+
 	Rem
 	bbdoc: Get the local time, second level resolution, based on the time zone settings of the computer.
 	about:
@@ -1230,15 +1191,35 @@ Type TTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local t:TTime = TTime.CreateLocal()
+	Local t:TTime = New TTime()
 	
 	Print t.toString()
 	</pre>
 	<a href="../examples/ttime_createLocal.bmx">Example source</a>
 	End Rem
-	Function CreateLocal:TTime()
-		Return _create(bmx_ptime_local_new())
-	End Function
+	Method New()
+		New(bmx_ptime_local_new())
+	End Method
+
+	Rem
+	bbdoc: Constructs a new #TTime from a date and offset.
+	about:
+	<pre>
+	SuperStrict
+	
+	Framework Boost.DateTime
+	Import BRL.StandardIO
+	
+	Local d:TDate = New TDate(2002, Jan, 1)
+	Local t:TTime = New TTime(d, TDHours(14))
+	
+	Print t.toString()
+	</pre>
+	<a href="../examples/ttime_create.bmx">Example source</a>
+	End Rem
+	Method New(date:TDate, offset:TTimeDuration)
+		New(bmx_ptime_new(date.datePtr, offset.durationPtr))
+	End Method
 	
 	Rem
 	bbdoc: Get the UTC time.
@@ -1249,14 +1230,14 @@ Type TTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local t:TTime = TTime.CreateUniversal()
+	Local t:TTime = New TTimeUniversal()
 	
 	Print t.toString()
 	</pre>
 	<a href="../examples/ttime_createUniversal.bmx">Example source</a>
 	End Rem
-	Function CreateUniversal:TTime()
-		Return _create(bmx_ptime_universal_new())
+	Function Universal:TTime()
+		Return New TTime(bmx_ptime_universal_new())
 	End Function
 	
 	Rem
@@ -1266,8 +1247,8 @@ Type TTime
 	microsecond resolution via this API. If higher resolution is critical to your application
 	test your platform to see the achieved resolution.
 	End Rem
-	Function CreateLocalMS:TTime()
-		Return _create(bmx_ptime_local_microsecond_new())
+	Function LocalMS:TTime()
+		Return New TTime(bmx_ptime_local_microsecond_new())
 	End Function
 	
 	Rem
@@ -1276,8 +1257,8 @@ Type TTime
 	implemented using <tt>ftime</tt>. Win32 systems often do not achieve microsecond resolution via this API.
 	If higher resolution is critical to your application test your platform to see the achieved resolution.
 	End Rem
-	Function CreateUniversalMS:TTime()
-		Return _create(bmx_ptime_universal_microsecond_new())
+	Function UniversalMS:TTime()
+		Return New TTime(bmx_ptime_universal_microsecond_new())
 	End Function
 	
 	Rem
@@ -1286,18 +1267,18 @@ Type TTime
 	#FileTime returns the time at UTC, so you will need to apply your local offset to get
 	the correct local system time.
 	End Rem
-	Function CreateFromFileTime:TTime(time:Int)
+	Function FromFileTime:TTime(time:Int)
 		' since the "proper" call didn't work, we do what it does internally, and add seconds to base date!
-		Return Create(TDate.Create(1970, 1, 1), TDSeconds(time))
+		Return New TTime(New TDate(1970, 1, 1), TDSeconds(time))
 	End Function
 	
 	Rem
 	bbdoc: Converts a time_t struct to a #TTime.
 	End Rem
-	Function CreateFromTimeT:TTime(time:Byte Ptr)
+	Function FromTimeT:TTime(time:Byte Ptr)
 		' since the "proper" call didn't work, we construct the date + time from the struct ourselves!
 		Local tm:Int Ptr = Int Ptr(time)
-		Return Create(TDate.Create(tm[5] + 1900, tm[4] + 1, tm[3]), TDHours(tm[2]).add(TDMinutes(tm[1])).add(TDSeconds(tm[0])))
+		Return New TTime(New TDate(tm[5] + 1900, tm[4] + 1, tm[3]), TDHours(tm[2]).add(TDMinutes(tm[1])).add(TDSeconds(tm[0])))
 	End Function
 	
 	Rem
@@ -1309,14 +1290,14 @@ Type TTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2002, Jan, 10)
-	Local t:TTime = TTime.Create(d, TDHours(1))
+	Local d:TDate = New TDate(2002, Jan, 10)
+	Local t:TTime = New TTime(d, TDHours(1))
 	Print t.date().toString()
 	</pre>
 	<a href="../examples/ttime_date.bmx">Example source</a>
 	End Rem
 	Method date:TDate()
-		Return TDate._create(bmx_ptime_date(ptimePtr))
+		Return New TDate(bmx_ptime_date(ptimePtr))
 	End Method
 	
 	Rem
@@ -1328,14 +1309,14 @@ Type TTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2002, Jan, 10)
-	Local t:TTime = TTime.Create(d, TDHours(1))
+	Local d:TDate = New TDate(2002, Jan, 10)
+	Local t:TTime = New TTime(d, TDHours(1))
 	Print t.timeOfDay().toString()
 	</pre>
 	<a href="../examples/ttime_timeOfDay.bmx">Example source</a>
 	End Rem
 	Method timeOfDay:TTimeDuration()
-		Return TTimeDuration._create(bmx_ptime_time_of_day(ptimePtr))
+		Return New TTimeDuration(bmx_ptime_time_of_day(ptimePtr))
 	End Method
 	
 	Rem
@@ -1369,8 +1350,8 @@ Type TTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2002, Jan, 1)
-	Local t:TTime = TTime.Create(d, TDMinutes(5))
+	Local d:TDate = New TDate(2002, Jan, 1)
+	Local t:TTime = New TTime(d, TDMinutes(5))
 	
 	Local t2:TTime = t.addDays(1)
 	
@@ -1380,7 +1361,7 @@ Type TTime
 	<a href="../examples/ttime_addDays.bmx">Example source</a>
 	End Rem
 	Method addDays:TTime(days:Int)
-		Return _create(bmx_ptime_add_days(ptimePtr, days))
+		Return New TTime(bmx_ptime_add_days(ptimePtr, days))
 	End Method
 	
 	Rem
@@ -1392,8 +1373,8 @@ Type TTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2002, Jan, 1)
-	Local t:TTime = TTime.Create(d, TDMinutes(5))
+	Local d:TDate = New TDate(2002, Jan, 1)
+	Local t:TTime = New TTime(d, TDMinutes(5))
 	
 	Local t2:TTime = t.subtractDays(1)
 	
@@ -1403,7 +1384,7 @@ Type TTime
 	<a href="../examples/ttime_subtractDays.bmx">Example source</a>
 	End Rem
 	Method subtractDays:TTime(days:Int)
-		Return _create(bmx_ptime_subtract_days(ptimePtr, days))
+		Return New TTime(bmx_ptime_subtract_days(ptimePtr, days))
 	End Method
 	
 	Rem
@@ -1415,8 +1396,8 @@ Type TTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2002, Jan, 1)
-	Local t:TTime = TTime.Create(d, TDMinutes(5))
+	Local d:TDate = New TDate(2002, Jan, 1)
+	Local t:TTime = New TTime(d, TDMinutes(5))
 	
 	Local t2:TTime = t.addDuration(TDHours(1).add(TDMinutes(2)))
 	
@@ -1426,7 +1407,7 @@ Type TTime
 	<a href="../examples/ttime_addDuration.bmx">Example source</a>
 	End Rem
 	Method addDuration:TTime(duration:TTimeDuration)
-		Return _create(bmx_ptime_add_duration(ptimePtr, duration.durationPtr))
+		Return New TTime(bmx_ptime_add_duration(ptimePtr, duration.durationPtr))
 	End Method
 
 	Rem
@@ -1438,8 +1419,8 @@ Type TTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2002, Jan, 1)
-	Local t:TTime = TTime.Create(d, TDMinutes(5))
+	Local d:TDate = New TDate(2002, Jan, 1)
+	Local t:TTime = New TTime(d, TDMinutes(5))
 	
 	Local t2:TTime = t.subtractDuration(TDMinutes(2))
 	
@@ -1449,7 +1430,7 @@ Type TTime
 	<a href="../examples/ttime_subtractDuration.bmx">Example source</a>
 	End Rem
 	Method subtractDuration:TTime(duration:TTimeDuration)
-		Return _create(bmx_ptime_subtract_duration(ptimePtr, duration.durationPtr))
+		Return New TTime(bmx_ptime_subtract_duration(ptimePtr, duration.durationPtr))
 	End Method
 
 	Rem
@@ -1461,16 +1442,16 @@ Type TTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local d:TDate = TDate.Create(2002, Jan, 1)
-	Local t1:TTime = TTime.Create(d, TDMinutes(5))
-	Local t2:TTime = TTime.Create(d, TDMinutes(2))
+	Local d:TDate = New TDate(2002, Jan, 1)
+	Local t1:TTime = New TTime(d, TDMinutes(5))
+	Local t2:TTime = New TTime(d, TDMinutes(2))
 	
 	Print t2.subtract(t1).toString() ' negative result
 	</pre>
 	<a href="../examples/ttime_subtract.bmx">Example source</a>
 	End Rem
 	Method subtract:TTimeDuration(time:TTime)
-		Return TTimeDuration._create(bmx_ptime_subtract(ptimePtr, time.ptimePtr))
+		Return New TTimeDuration(bmx_ptime_subtract(ptimePtr, time.ptimePtr))
 	End Method
 
 	Rem
@@ -1533,6 +1514,15 @@ Type TTimeDuration
 
 	Field durationPtr:Byte Ptr
 	
+	Private
+	Method New()
+	End Method
+
+	Method New(durationPtr:Byte Ptr)
+		Self.durationPtr = durationPtr
+	End Method
+	Public
+
 	Rem
 	bbdoc: Creates a new #TTimeDuration from the counts.
 	about: The @fractions parameter is a number of units and is therefore affected by the resolution
@@ -1545,12 +1535,12 @@ Type TTimeDuration
 	' create a resolution independent count -- divide by 10 since there are 10 tenths in a second.
 	Local count:Int = numberOfTenths * (TicksPerSecond() / 10)
 	
-	Local duration:TTimeDuration = TTimeDuration.Create(1, 2, 3, count) ' 01:02:03.5 - no matter the resolution settings
+	Local duration:TTimeDuration = New TTimeDuration(1, 2, 3, count) ' 01:02:03.5 - no matter the resolution settings
 	</pre>
 	End Rem
-	Function Create:TTimeDuration(hours:Int = 0, minutes:Int = 0, seconds:Int = 0, fractions:Int = 0)
-		Return _create(bmx_time_duration(hours, minutes, seconds, fractions))
-	End Function
+	Method New(hours:Int = 0, minutes:Int = 0, seconds:Int = 0, fractions:Int = 0)
+		New(bmx_time_duration(hours, minutes, seconds, fractions))
+	End Method
 	
 	Rem
 	bbdoc: Creates a new #TTimeDuration for the number of hours.
@@ -1568,7 +1558,7 @@ Type TTimeDuration
 	<a href="../examples/ttimeduration_hour.bmx">Example source</a>
 	End Rem
 	Function Hour:TTimeDuration(hours:Int)
-		Return _create(bmx_time_duration_new_hours(hours))
+		Return New TTimeDuration(bmx_time_duration_new_hours(hours))
 	End Function
 
 	Rem
@@ -1587,7 +1577,7 @@ Type TTimeDuration
 	<a href="../examples/ttimeduration_minute.bmx">Example source</a>
 	End Rem
 	Function Minute:TTimeDuration(minutes:Int)
-		Return _create(bmx_time_duration_new_minutes(minutes))
+		Return New TTimeDuration(bmx_time_duration_new_minutes(minutes))
 	End Function
 
 	Rem
@@ -1606,7 +1596,7 @@ Type TTimeDuration
 	<a href="../examples/ttimeduration_second.bmx">Example source</a>
 	End Rem
 	Function Second:TTimeDuration(seconds:Int)
-		Return _create(bmx_time_duration_new_seconds(seconds))
+		Return New TTimeDuration(bmx_time_duration_new_seconds(seconds))
 	End Function
 
 	Rem
@@ -1625,19 +1615,7 @@ Type TTimeDuration
 	<a href="../examples/ttimeduration_millisecond.bmx">Example source</a>
 	End Rem
 	Function Millisecond:TTimeDuration(milliseconds:Int)
-		Return _create(bmx_time_duration_new_milliseconds(milliseconds))
-	End Function
-	
-	Function _create:TTimeDuration(durationPtr:Byte Ptr)
-		If durationPtr Then
-			Local this:TTimeDuration = New TTimeDuration
-		
-			this.durationPtr = durationPtr
-		
-			Return this
-		End If
-		
-		Return Null
+		Return New TTimeDuration(bmx_time_duration_new_milliseconds(milliseconds))
 	End Function
 	
 	Rem
@@ -1706,7 +1684,7 @@ Type TTimeDuration
 	<a href="../examples/ttimeduration_invertSign.bmx">Example source</a>
 	End Rem
 	Method invertSign:TTimeDuration()
-		Return _create(bmx_time_duration_invert_sign(durationPtr))
+		Return New TTimeDuration(bmx_time_duration_invert_sign(durationPtr))
 	End Method
 	
 	Rem
@@ -1739,7 +1717,7 @@ Type TTimeDuration
 	<a href="../examples/ttimeduration_add.bmx">Example source</a>
 	End Rem
 	Method add:TTimeDuration(duration:TTimeDuration)
-		Return _create(bmx_time_duration_add(durationPtr, duration.durationPtr))
+		Return New TTimeDuration(bmx_time_duration_add(durationPtr, duration.durationPtr))
 	End Method
 	
 	Rem
@@ -1751,15 +1729,15 @@ Type TTimeDuration
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local td1:TTimeDuration = TTimeDuration.Create(12, 30, 20)
-	Local td2:TTimeDuration = TTimeDuration.Create(1, 30, 20)
+	Local td1:TTimeDuration = New TTimeDuration(12, 30, 20)
+	Local td2:TTimeDuration = New TTimeDuration(1, 30, 20)
 	
 	Print td1.subtract(td2).toString()
 	</pre>
 	<a href="../examples/ttimeduration_subtract.bmx">Example source</a>
 	End Rem
 	Method subtract:TTimeDuration(duration:TTimeDuration)
-		Return _create(bmx_time_duration_subtract(durationPtr, duration.durationPtr))
+		Return New TTimeDuration(bmx_time_duration_subtract(durationPtr, duration.durationPtr))
 	End Method
 	
 	Rem
@@ -1771,14 +1749,14 @@ Type TTimeDuration
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local td:TTimeDuration = TTimeDuration.Create(18, 30) ' 18 hours and 30 mins
+	Local td:TTimeDuration = New TTimeDuration(18, 30) ' 18 hours and 30 mins
 	
 	Print td.divide(2).toString() ' 9 hours and 15 mins
 	</pre>
 	<a href="../examples/ttimeduration_divide.bmx">Example source</a>
 	End Rem
 	Method divide:TTimeDuration(value:Int)
-		Return _create(bmx_time_duration_divide(durationPtr, value))
+		Return New TTimeDuration(bmx_time_duration_divide(durationPtr, value))
 	End Method
 	
 	Rem
@@ -1790,14 +1768,14 @@ Type TTimeDuration
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local td:TTimeDuration = TTimeDuration.Create(4, 10, 6)
+	Local td:TTimeDuration = New TTimeDuration(4, 10, 6)
 	
 	Print td.multiply(3).toString()
 	</pre>
 	<a href="../examples/ttimeduration_multiply.bmx">Example source</a>
 	End Rem
 	Method multiply:TTimeDuration(value:Int)
-		Return _create(bmx_time_duration_multiply(durationPtr, value))
+		Return New TTimeDuration(bmx_time_duration_multiply(durationPtr, value))
 	End Method
 	
 	Rem
@@ -1866,34 +1844,31 @@ End Rem
 Type TTimePeriod
 	Field timePeriodPtr:Byte Ptr
 	
+	Private
+	Method New()
+	End Method
+
+	Method New(timePeriodPtr:Byte Ptr)
+		Self.timePeriodPtr = timePeriodPtr
+	End Method
+
+	Public
+
 	Rem
 	bbdoc: Create a period as [begin, end).
 	about: If end is <= begin then the period will be defined as invalid.
 	End Rem
-	Function Create:TTimePeriod(beginTime:TTime, endTime:TTime)
-		Return _create(bmx_time_period_timetime(beginTime.ptimePtr, endTime.ptimePtr))
-	End Function
+	Method New(beginTime:TTime, endTime:TTime)
+		New(bmx_time_period_timetime(beginTime.ptimePtr, endTime.ptimePtr))
+	End Method
 	
 	Rem
 	bbdoc: Create a period as [begin, begin + duration) where end would be begin + duration.
 	about: If duration is <= zero then the period will be defined as invalid.
 	End Rem
-	Function CreateWithDuration:TTimePeriod(beginTime:TTime, duration:TTimeDuration)
-		Return _create(bmx_time_period_withduration(beginTime.ptimePtr, duration.durationPtr))
-	End Function
-
-	Function _create:TTimePeriod(timePeriodPtr:Byte Ptr)
-	
-		If timePeriodPtr Then
-			Local this:TTimePeriod = New TTimePeriod
-			
-			this.timePeriodPtr = timePeriodPtr
-			
-			Return this
-		End If
-		
-		Return Null
-	End Function
+	Method New(beginTime:TTime, duration:TTimeDuration)
+		New(bmx_time_period_withduration(beginTime.ptimePtr, duration.durationPtr))
+	End Method
 
 	Rem
 	bbdoc: Add @duration to both begin and end.
@@ -1906,28 +1881,28 @@ Type TTimePeriod
 	bbdoc: Return first time of period.
 	End Rem
 	Method begin:TTime()
-		Return TTime._create(bmx_time_period_begin(timePeriodPtr))
+		Return New TTime(bmx_time_period_begin(timePeriodPtr))
 	End Method
 	
 	Rem
 	bbdoc: Return last time in the period
 	End Rem
 	Method last:TTime()
-		Return TTime._create(bmx_time_period_last(timePeriodPtr))
+		Return New TTime(bmx_time_period_last(timePeriodPtr))
 	End Method
 	
 	Rem
 	bbdoc: Return one past the last in period
 	End Rem
 	Method periodEnd:TTime()
-		Return TTime._create(bmx_time_period_end(timePeriodPtr))
+		Return New TTime(bmx_time_period_end(timePeriodPtr))
 	End Method
 	
 	Rem
 	bbdoc: Return the length of the time period.
 	End Rem
 	Method length:TTimeDuration()
-		Return TTimeDuration._create(bmx_time_period_length(timePeriodPtr))
+		Return New TTimeDuration(bmx_time_period_length(timePeriodPtr))
 	End Method
 	
 	Rem
@@ -1965,7 +1940,7 @@ Type TTimePeriod
 	about: Null if no intersection.
 	End Rem
 	Method intersection:TTimePeriod(period:TTimePeriod)
-		Return _create(bmx_time_period_intersection(timePeriodPtr, period.timePeriodPtr))
+		Return New TTimePeriod(bmx_time_period_intersection(timePeriodPtr, period.timePeriodPtr))
 	End Method
 	
 	Rem
@@ -1973,22 +1948,21 @@ Type TTimePeriod
 	about: Null if no intersection.
 	End Rem
 	Method merge:TTimePeriod(period:TTimePeriod)
-		Return _create(bmx_time_period_merge(timePeriodPtr, period.timePeriodPtr))
+		Return New TTimePeriod(bmx_time_period_merge(timePeriodPtr, period.timePeriodPtr))
 	End Method
 	
 	Rem
 	bbdoc: Combines two periods and any gap between them such that begin = min(p1.begin, p2.begin) and end = max(p1.end , p2.end).
 	End Rem
 	Method span:TTimePeriod(period:TTimePeriod)
-		Return _create(bmx_time_period_span(timePeriodPtr, period.timePeriodPtr))
+		Return New TTimePeriod(bmx_time_period_span(timePeriodPtr, period.timePeriodPtr))
 	End Method
 	
 	Rem
 	bbdoc: To [YYYY-mmm-DD hh:mm:ss.fffffffff/YYYY-mmm-DD hh:mm:ss.fffffffff] string where mmm is 3 char month name.
 	End Rem
 	Method toString:String()
-' TODO
-' convertUTF8toISO8859(xxxxxx)
+		Return bmx_time_period_to_simple_string(timePeriodPtr)
 	End Method
 
 	Rem
@@ -2044,30 +2018,25 @@ Type TTZDatabase
 
 	Field tzDatabasePtr:Byte Ptr
 	
+	Private
+	Method New(tzDatabasePtr:Byte Ptr)
+		Self.tzDatabasePtr = tzDatabasePtr
+	End Method
+
+	Public
+
 	Rem
 	bbdoc: Creates an empty #TTZDatabase.
 	End Rem
-	Function Create:TTZDatabase()
-		Return _create(bmx_tz_database())
-	End Function
-	
-	Function _create:TTZDatabase(tzDatabasePtr:Byte Ptr)
-		If tzDatabasePtr Then
-			Local this:TTZDatabase = New TTZDatabase
-	
-			this.tzDatabasePtr = tzDatabasePtr
-			
-			Return this
-		End If
-		
-		Return Null
-	End Function
+	Method New()
+		New(bmx_tz_database())
+	End Method
 	
 	Rem
 	bbdoc: Creates and populates a #TTZDatabase with time zone records found in the zone spec file.
 	End Rem
 	Function LoadFromFile:TTZDatabase(filename:String)
-		Return _create(bmx_tz_load_from_file(filename))
+		Return New TTZDatabase(bmx_tz_load_from_file(filename))
 	End Function
 	
 	Rem
@@ -2075,7 +2044,7 @@ Type TTZDatabase
 	about: @id is the region name for this zone (e.g. "America/Phoenix").
 	End Rem
 	Method addRecord(id:String, zone:TTimeZone)
-' TODO
+		bmx_tz_database_add_record(tzDatabasePtr, id, zone.timeZonePtr)
 	End Method
 	
 	Rem
@@ -2083,11 +2052,14 @@ Type TTZDatabase
 	returns: a #TTimeZone or Null if not found.
 	End Rem
 	Method timeZoneFromRegion:TTimeZone(id:String)
-		Return TTimeZone._create(bmx_tz_time_zone_from_region(tzDatabasePtr, id))
+		Return New TTimeZone(bmx_tz_time_zone_from_region(tzDatabasePtr, id))
 	End Method
 	
+	Rem
+	bbdoc: Returns an array of strings that holds all the region ID strings from the database.
+	End Rem
 	Method regionList:String[]()
-' TODO !!
+		Return bmx_tz_database_region_list(tzDatabasePtr)
 	End Method
 	
 	Method Delete()
@@ -2107,37 +2079,34 @@ Type TLocalDateTime
 
 	Field localDateTimePtr:Byte Ptr
 	
-	Function CreateFromClock:TLocalDateTime(zone:TTimeZone)
-		Return _create(bmx_local_date_time_new_sec_clock(zone.timeZonePtr))
-	End Function
+	Private
+	Method New()
+	End Method
+
+	Method New(localDateTimePtr:Byte Ptr)
+		Self.localDateTimePtr = localDateTimePtr
+	End Method
+
+	Public
+
+	Method New(zone:TTimeZone)
+		New(bmx_local_date_time_new_sec_clock(zone.timeZonePtr))
+	End Method
 
 	Rem
 	bbdoc:
 	abtou: The given time is expected to be UTC. Therefore, the given time will be adjusted
 	according to the offset described in the time zone.
 	End Rem
-	Function CreateFromTime:TLocalDateTime(time:TTime, zone:TTimeZone)
-		Return _create(bmx_local_date_time_new_time(time.ptimePtr, zone.timeZonePtr))
-	End Function
-	
-	Function _create:TLocalDateTime(localDateTimePtr:Byte Ptr)
-	
-		If localDateTimePtr Then
-			Local this:TLocalDateTime = New TLocalDateTime
-		
-			this.localDateTimePtr = localDateTimePtr
-		
-			Return this
-		End If
-		
-		Return Null
-	End Function
+	Method New(time:TTime, zone:TTimeZone)
+		New(bmx_local_date_time_new_time(time.ptimePtr, zone.timeZonePtr))
+	End Method
 
 	Rem
 	bbdoc: Returns associated #TTimeZone object.
 	End Rem
 	Method zone:TTimeZone()
-		Return TTimeZone._create(bmx_local_date_time_zone(localDateTimePtr))
+		Return New TTimeZone(bmx_local_date_time_zone(localDateTimePtr))
 	End Method
 	
 	Rem
@@ -2156,9 +2125,9 @@ Type TLocalDateTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local pt:TTime = TTime.Create(TDate.Create(2004, Nov, 5), TDHours(10))
+	Local pt:TTime = New TTime(New TDate(2004, Nov, 5), TDHours(10))
 	
-	Local zone:TTimeZone = TTimeZone.Create("MST-07")
+	Local zone:TTimeZone = New TTimeZone("MST-07")
 	
 	Local az:TLocalDateTime = TLocalDateTime.CreateFromTime(pt, zone)
 	
@@ -2167,7 +2136,7 @@ Type TLocalDateTime
 	<a href="../examples/tlocaldatetime_UTCTime.bmx">Example source</a>
 	End Rem
 	Method UTCTime:TTime()
-		Return TTime._create(bmx_local_date_time_utc_time(localDateTimePtr))
+		Return New TTime(bmx_local_date_time_utc_time(localDateTimePtr))
 	End Method
 	
 	Rem
@@ -2179,9 +2148,9 @@ Type TLocalDateTime
 	Framework Boost.DateTime
 	Import BRL.StandardIO
 	
-	Local pt:TTime = TTime.Create(TDate.Create(2004, Nov, 5), TDHours(10))
+	Local pt:TTime = New TTime(New TDate(2004, Nov, 5), TDHours(10))
 	
-	Local zone:TTimeZone = TTimeZone.Create("MST-07")
+	Local zone:TTimeZone = New TTimeZone("MST-07")
 	
 	Local az:TLocalDateTime = TLocalDateTime.CreateFromTime(pt, zone)
 	
@@ -2191,7 +2160,7 @@ Type TLocalDateTime
 	<a href="../examples/tlocaldatetime_localTime.bmx">Example source</a>
 	End Rem
 	Method localTime:TTime()
-		Return TTime._create(bmx_local_date_time_local_time(localDateTimePtr))
+		Return New TTime(bmx_local_date_time_local_time(localDateTimePtr))
 	End Method
 	
 	Method toString:String()
@@ -2235,56 +2204,56 @@ Type TLocalDateTime
 	bbdoc: Adds @days to local date time, returning a new #TLocalDateTime.
 	End Rem
 	Method addDays:TLocalDateTime(days:Int)
-		Return _create(bmx_local_date_time_add_days(localDateTimePtr, days))
+		Return New TLocalDateTime(bmx_local_date_time_add_days(localDateTimePtr, days))
 	End Method
 	
 	Rem
 	bbdoc: Adds @months to local date time, returning a new #TLocalDateTime.
 	End Rem
 	Method addMonths:TLocalDateTime(months:Int)
-		Return _create(bmx_local_date_time_add_months(localDateTimePtr, months))
+		Return New TLocalDateTime(bmx_local_date_time_add_months(localDateTimePtr, months))
 	End Method
 	
 	Rem
 	bbdoc: Adds @years to local date time, returning a new #TLocalDateTime.
 	End Rem
 	Method addYears:TLocalDateTime(years:Int)
-		Return _create(bmx_local_date_time_add_years(localDateTimePtr, years))
+		Return New TLocalDateTime(bmx_local_date_time_add_years(localDateTimePtr, years))
 	End Method
 	
 	Rem
 	bbdoc: Subtracts @days from local date time, returning a new #TLocalDateTime.
 	End Rem
 	Method subtractDays:TLocalDateTime(days:Int)
-		Return _create(bmx_local_date_time_subtract_days(localDateTimePtr, days))
+		Return New TLocalDateTime(bmx_local_date_time_subtract_days(localDateTimePtr, days))
 	End Method
 	
 	Rem
 	bbdoc: Subtracts @months from local date time, returning a new #TLocalDateTime.
 	End Rem
 	Method subtractMonths:TLocalDateTime(months:Int)
-		Return _create(bmx_local_date_time_subtract_months(localDateTimePtr, months))
+		Return New TLocalDateTime(bmx_local_date_time_subtract_months(localDateTimePtr, months))
 	End Method
 	
 	Rem
 	bbdoc: Subtracts @years from local date time, returning a new #TLocalDateTime.
 	End Rem
 	Method subtractYears:TLocalDateTime(years:Int)
-		Return _create(bmx_local_date_time_subtract_years(localDateTimePtr, years))
+		Return New TLocalDateTime(bmx_local_date_time_subtract_years(localDateTimePtr, years))
 	End Method
 	
 	Rem
 	bbdoc: Adds @duration to the local date time, returning a new #TLocalDateTime.
 	End Rem
 	Method addDuration:TLocalDateTime(duration:TTimeDuration)
-		Return _create(bmx_local_date_time_add_duration(localDateTimePtr, duration.durationPtr))
+		Return New TLocalDateTime(bmx_local_date_time_add_duration(localDateTimePtr, duration.durationPtr))
 	End Method
 	
 	Rem
 	bbdoc: Subtracts @duration from the local date time, returning a new #TLocalDateTime.
 	End Rem
 	Method subtractDuration:TLocalDateTime(duration:TTimeDuration)
-		Return _create(bmx_local_date_time_subtract_duration(localDateTimePtr, duration.durationPtr))
+		Return New TLocalDateTime(bmx_local_date_time_subtract_duration(localDateTimePtr, duration.durationPtr))
 	End Method
 	
 	Method Delete()
@@ -2304,61 +2273,59 @@ End Rem
 Type TLocalTimePeriod
 
 	Field localTimePeriodPtr:Byte Ptr
+
+	Private
+	Method New()
+	End Method
+
+	Method New(localTimePeriodPtr:Byte Ptr)
+		Self.localTimePeriodPtr = localTimePeriodPtr
+	End Method
+
+	Public
 	
 	Rem
 	bbdoc: Create a period as [begin, end).
 	about: If end is <= begin then the period will be defined as invalid.
 	End Rem
-	Function Create:TLocalTimePeriod(beginTime:TLocalDateTime, endTime:TLocalDateTime)
-		Return _create(bmx_local_time_period_new(beginTime.localDateTimePtr, endTime.localDateTimePtr))
-	End Function
-	
-	Function _create:TLocalTimePeriod(localTimePeriodPtr:Byte Ptr)
-		If localTimePeriodPtr Then
-			Local this:TLocalTimePeriod = New TLocalTimePeriod
-			
-			this.localTimePeriodPtr = localTimePeriodPtr
-			
-			Return this
-		End If
-		
-		Return Null
-	End Function
+	Method New(beginTime:TLocalDateTime, endTime:TLocalDateTime)
+		New(bmx_local_time_period_new(beginTime.localDateTimePtr, endTime.localDateTimePtr))
+	End Method
 	
 	Rem
 	bbdoc: Create a period as [begin, begin + duration) where end would be begin + duration.
 	about: If duration is <= zero then the period will be defined as invalid.
 	End Rem
-	Function CreateWithDuration:TLocalTimePeriod(beginTime:TLocalDateTime, duration:TTimeDuration)
-		Return _create(bmx_local_time_period_new_duration(beginTime.localDateTimePtr, duration.durationPtr))
-	End Function
+	Method New(beginTime:TLocalDateTime, duration:TTimeDuration)
+		New(bmx_local_time_period_new_duration(beginTime.localDateTimePtr, duration.durationPtr))
+	End Method
 
 	Rem
 	bbdoc: Return first local date time of the period.
 	End Rem
 	Method begin:TLocalDateTime()
-		Return TLocalDateTime._create(bmx_local_time_period_begin(localTimePeriodPtr))
+		Return New TLocalDateTime(bmx_local_time_period_begin(localTimePeriodPtr))
 	End Method
 	
 	Rem
 	bbdoc: Return last local date time in the period.
 	End Rem
 	Method last:TLocalDateTime()
-		Return TLocalDateTime._create(bmx_local_time_period_last(localTimePeriodPtr))
+		Return New TLocalDateTime(bmx_local_time_period_last(localTimePeriodPtr))
 	End Method
 	
 	Rem
 	bbdoc: Return one past the last in period.
 	End Rem
 	Method periodEnd:TLocalDateTime()
-		Return TLocalDateTime._create(bmx_local_time_period_end(localTimePeriodPtr))
+		Return New TLocalDateTime(bmx_local_time_period_end(localTimePeriodPtr))
 	End Method
 	
 	Rem
 	bbdoc: Return the length of the local time period.
 	End Rem
 	Method length:TTimeDuration()
-		Return TTimeDuration._create(bmx_local_time_period_length(localTimePeriodPtr))
+		Return New TTimeDuration(bmx_local_time_period_length(localTimePeriodPtr))
 	End Method
 	
 	Rem
@@ -2396,7 +2363,7 @@ Type TLocalTimePeriod
 	about: Null if no intersection.
 	End Rem
 	Method intersection:TLocalTimePeriod(period:TLocalTimePeriod)
-		Return _create(bmx_local_time_period_intersection(localTimePeriodPtr, period.localTimePeriodPtr))
+		Return New TLocalTimePeriod(bmx_local_time_period_intersection(localTimePeriodPtr, period.localTimePeriodPtr))
 	End Method
 	
 	Rem
@@ -2404,14 +2371,14 @@ Type TLocalTimePeriod
 	about: Null if no intersection.
 	End Rem
 	Method merge:TLocalTimePeriod(period:TLocalTimePeriod)
-		Return _create(bmx_local_time_period_merge(localTimePeriodPtr, period.localTimePeriodPtr))
+		Return New TLocalTimePeriod(bmx_local_time_period_merge(localTimePeriodPtr, period.localTimePeriodPtr))
 	End Method
 	
 	Rem
 	bbdoc: Combines two periods and any gap between them such that begin = min(p1.begin, p2.begin) and end = max(p1.end , p2.end).
 	End Rem
 	Method span:TLocalTimePeriod(period:TLocalTimePeriod)
-		Return _create(bmx_local_time_period_span(localTimePeriodPtr, period.localTimePeriodPtr))
+		Return New TLocalTimePeriod(bmx_local_time_period_span(localTimePeriodPtr, period.localTimePeriodPtr))
 	End Method
 	
 	Rem
@@ -2537,21 +2504,23 @@ End Rem
 Type TTimeZone
 
 	Field timeZonePtr:Byte Ptr
+
+	Private
+	Method New()
+	End Method
+
+	Method New(timeZonePtr:Byte Ptr)
+		Self.timeZonePtr = timeZonePtr
+	End Method
+
+	Public
 	
 	Rem
 	bbdoc: 
 	End Rem
-	Function Create:TTimeZone(description:String)
-		Return _create(bmx_posix_time_zone(description))
-	End Function
-	
-	Function _create:TTimeZone(timeZonePtr:Byte Ptr)
-		Local this:TTimeZone = New TTimeZone
-		
-		this.timeZonePtr = timeZonePtr
-	
-		Return this
-	End Function
+	Method New(description:String)
+		New(bmx_posix_time_zone(description))
+	End Method
 	
 	Rem
 	bbdoc: Returns the daylight savings abbreviation for the represented time zone.
@@ -2592,28 +2561,28 @@ Type TTimeZone
 	bbdoc: The date and time daylight savings time begins in given year.
 	End Rem
 	Method DSTLocalStartTime:TTime(year:Int)
-		Return TTime._create(bmx_time_zone_dst_local_start_time(timeZonePtr, year))
+		Return New TTime(bmx_time_zone_dst_local_start_time(timeZonePtr, year))
 	End Method
 
 	Rem
 	bbdoc: The date and time daylight savings time ends in given year.
 	End Rem
 	Method DSTLocalEndTime:TTime(year:Int)
-		Return TTime._create(bmx_time_zone_dst_local_end_time(timeZonePtr, year))
+		Return New TTime(bmx_time_zone_dst_local_end_time(timeZonePtr, year))
 	End Method
 	
 	Rem
 	bbdoc: The amount of time offset from UTC (typically in hours).
 	End Rem
 	Method baseUTCOffset:TTimeDuration()
-		Return TTimeDuration._create(bmx_time_zone_base_utc_offset(timeZonePtr))
+		Return New TTimeDuration(bmx_time_zone_base_utc_offset(timeZonePtr))
 	End Method
 	
 	Rem
 	bbdoc: The amount of time shifted during daylight savings.
 	End Rem
 	Method DSTOffset:TTimeDuration()
-		Return TTimeDuration._create(bmx_time_zone_dst_offset(timeZonePtr))
+		Return New TTimeDuration(bmx_time_zone_dst_offset(timeZonePtr))
 	End Method
 	
 	Rem
@@ -2652,19 +2621,20 @@ bbdoc: Date Generator for a partial date.
 End Rem
 Type TPartialDate Extends TYearBasedGenerator
 	
+	Private
+	Method New()
+	End Method
+
+	Public
 	Rem
 	bbdoc: Creates a new #TPartialDate for the given day and month.
 	End Rem
-	Function Create:TPartialDate(day:Int, Month:Int)
-		Local this:TPartialDate = New TPartialDate
-		
-		this.ybgPtr = bmx_partial_date_new(day, Month)
-	
-		Return this
-	End Function
+	Method New(day:Int, Month:Int)
+		ybgPtr = bmx_partial_date_new(day, Month)
+	End Method
 
 	Method getDate:TDate(year:Int)
-		Return TDate._create(bmx_partial_date_get_date(ybgPtr, year))
+		Return New TDate(bmx_partial_date_get_date(ybgPtr, year))
 	End Method
 
 	Method Delete()
@@ -2680,7 +2650,13 @@ Rem
 bbdoc: Date Generator for last day of the week in month.
 End Rem
 Type TLastDayOfWeekInMonth Extends TYearBasedGenerator
-	
+
+	Private
+	Method New()
+	End Method
+
+	Public
+
 	Rem
 	bbdoc: Creates a new #TLastDayOfWeekInMonth for the given weekday and month.
 	about: A weekday may be one of #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday,
@@ -2688,16 +2664,12 @@ Type TLastDayOfWeekInMonth Extends TYearBasedGenerator
 	Month may be one of #Jan, #Feb, #Mar, #Apr, #May, #Jun, #Jul, #Aug, #Sep, #Oct, 
 	#Nov or #Dec.
 	End Rem
-	Function Create:TLastDayOfWeekInMonth(WeekDay:Int, Month:Int)
-		Local this:TLastDayOfWeekInMonth = New TLastDayOfWeekInMonth
-		
-		this.ybgPtr = bmx_last_day_of_week_in_month_new(WeekDay, Month)
-	
-		Return this
-	End Function
+	Method New(WeekDay:Int, Month:Int)
+		ybgPtr = bmx_last_day_of_week_in_month_new(WeekDay, Month)
+	End Method
 
 	Method getDate:TDate(year:Int)
-		Return TDate._create(bmx_last_day_of_week_in_month_get_date(ybgPtr, year))
+		Return New TDate(bmx_last_day_of_week_in_month_get_date(ybgPtr, year))
 	End Method
 
 	Method Delete()
@@ -2714,6 +2686,12 @@ bbdoc: Date Generator for first day of the week in month.
 End Rem
 Type TFirstDayOfWeekInMonth Extends TYearBasedGenerator
 	
+	Private
+	Method New()
+	End Method
+
+	Public
+
 	Rem
 	bbdoc: Creates a new #TFirstDayOfWeekInMonth for the given weekday and month.
 	about: A weekday may be one of #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday,
@@ -2721,16 +2699,12 @@ Type TFirstDayOfWeekInMonth Extends TYearBasedGenerator
 	Month may be one of #Jan, #Feb, #Mar, #Apr, #May, #Jun, #Jul, #Aug, #Sep, #Oct, 
 	#Nov or #Dec.
 	End Rem
-	Function Create:TFirstDayOfWeekInMonth(WeekDay:Int, Month:Int)
-		Local this:TFirstDayOfWeekInMonth = New TFirstDayOfWeekInMonth
-		
-		this.ybgPtr = bmx_first_day_of_week_in_month_new(WeekDay, Month)
-	
-		Return this
-	End Function
+	Method New(WeekDay:Int, Month:Int)
+		ybgPtr = bmx_first_day_of_week_in_month_new(WeekDay, Month)
+	End Method
 
 	Method getDate:TDate(year:Int)
-		Return TDate._create(bmx_first_day_of_week_in_month_get_date(ybgPtr, year))
+		Return New TDate(bmx_first_day_of_week_in_month_get_date(ybgPtr, year))
 	End Method
 
 	Method Delete()
@@ -2749,6 +2723,12 @@ of December, etc.
 End Rem
 Type TNthDayOfWeekInMonth Extends TYearBasedGenerator
 	
+	Private
+	Method New()
+	End Method
+
+	Public
+
 	Rem
 	bbdoc: Creates a new #TNthDayOfWeekInMonth for the given nth, weekday and month.
 	about: Nth may be one of #First, #Second, #Third, #Fourth, or #Fifth (1-5).
@@ -2757,16 +2737,12 @@ Type TNthDayOfWeekInMonth Extends TYearBasedGenerator
 	Month may be one of #Jan, #Feb, #Mar, #Apr, #May, #Jun, #Jul, #Aug, #Sep, #Oct, 
 	#Nov or #Dec (1-12).
 	End Rem
-	Function Create:TNthDayOfWeekInMonth(nth:Int, WeekDay:Int, Month:Int)
-		Local this:TNthDayOfWeekInMonth = New TNthDayOfWeekInMonth
-		
-		this.ybgPtr = bmx_nth_day_of_week_in_month_new(nth, WeekDay, Month)
-	
-		Return this
-	End Function
+	Method New(nth:Int, WeekDay:Int, Month:Int)
+		ybgPtr = bmx_nth_day_of_week_in_month_new(nth, WeekDay, Month)
+	End Method
 
 	Method getDate:TDate(year:Int)
-		Return TDate._create(bmx_nth_day_of_week_in_month_get_date(ybgPtr, year))
+		Return New TDate(bmx_nth_day_of_week_in_month_get_date(ybgPtr, year))
 	End Method
 
 	Method Delete()
@@ -2784,6 +2760,12 @@ about: Calculate something like First Sunday after Jan 1,2002.
 End Rem
 Type TFirstDayOfWeekAfter
 
+	Private
+	Method New()
+	End Method
+
+	Public
+
 	Field ybgPtr:Byte Ptr
 	
 	Rem
@@ -2791,19 +2773,15 @@ Type TFirstDayOfWeekAfter
 	about: A weekday may be one of #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday,
 	#Friday or #Saturday (0-6).
 	End Rem
-	Function Create:TFirstDayOfWeekAfter(WeekDay:Int)
-		Local this:TFirstDayOfWeekAfter = New TFirstDayOfWeekAfter
-		
-		this.ybgPtr = bmx_first_day_of_week_after_new(WeekDay)
-	
-		Return this
-	End Function
+	Method New(WeekDay:Int)
+		ybgPtr = bmx_first_day_of_week_after_new(WeekDay)
+	End Method
 
 	Rem
 	bbdoc: Returns the date for the first day after the specified @date.
 	End Rem
 	Method getDate:TDate(date:TDate)
-		Return TDate._create(bmx_first_day_of_week_after_get_date(ybgPtr, date.datePtr))
+		Return New TDate(bmx_first_day_of_week_after_get_date(ybgPtr, date.datePtr))
 	End Method
 
 	Method Delete()
@@ -2821,6 +2799,11 @@ about: Calculate something like First Monday before Feb 1,2002
 End Rem
 Type TFirstDayOfWeekBefore
 
+	Private
+	Method New()
+	End Method
+	Public
+
 	Field ybgPtr:Byte Ptr
 	
 	Rem
@@ -2828,19 +2811,15 @@ Type TFirstDayOfWeekBefore
 	about: A weekday may be one of #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday,
 	#Friday or #Saturday (0-6).
 	End Rem
-	Function Create:TFirstDayOfWeekBefore(WeekDay:Int)
-		Local this:TFirstDayOfWeekBefore = New TFirstDayOfWeekBefore
-		
-		this.ybgPtr = bmx_first_day_of_week_before_new(WeekDay)
-	
-		Return this
-	End Function
+	Method New(WeekDay:Int)
+		ybgPtr = bmx_first_day_of_week_before_new(WeekDay)
+	End Method
 
 	Rem
 	bbdoc: Returns the date for the first day before the specified @date.
 	End Rem
 	Method getDate:TDate(date:TDate)
-		Return TDate._create(bmx_first_day_of_week_before_get_date(ybgPtr, date.datePtr))
+		Return New TDate(bmx_first_day_of_week_before_get_date(ybgPtr, date.datePtr))
 	End Method
 
 	Method Delete()
@@ -2855,7 +2834,7 @@ End Type
 Rem
 bbdoc: The default date facet
 End Rem
-Global defaultDateFacet:TDateFacet = TDateFacet.Create()
+Global defaultDateFacet:TDateFacet = New TDateFacet()
 
 Rem
 bbdoc: The current date facet (for use with toString() type formatting)
@@ -2865,7 +2844,7 @@ Global currentDateFacet:TDateFacet = defaultDateFacet
 Rem
 bbdoc: The default time facet
 End Rem
-Global defaultTimeFacet:TTimeFacet = TTimeFacet.Create()
+Global defaultTimeFacet:TTimeFacet = New TTimeFacet()
 
 Rem
 bbdoc: The current time facet (for use with toString() type formatting)
@@ -2891,7 +2870,7 @@ Type TLocaleFacet
 	
 	Method New()
 		If Not generator Then
-			generator = New TBLGenerator.Create()
+			generator = New TBLGenerator()
 		End If
 	End Method
 	
@@ -2902,19 +2881,15 @@ bbdoc: The #TDateFacet enables users to have significant control over the output
 End Rem
 Type TDateFacet Extends TLocaleFacet
 
-	Function Create:TDateFacet()
-		Return CreateForLocale(TLocaleFacet.defaultLocale)
-	End Function
+	Method New()
+		New(TLocaleFacet.defaultLocale)
+	End Method
 
-	Function CreateForLocale:TDateFacet(locale:String)
-		Local this:TDateFacet = New TDateFacet
-		
-		this.facetPtr = bmx_datefacet_new()
-		this.localePtr = bmx_locale_new(this.facetPtr, generator.genPtr, locale)
-		this.locale = locale
-		
-		Return this
-	End Function
+	Method New(locale:String)
+		Self.facetPtr = bmx_datefacet_new()
+		Self.localePtr = bmx_locale_new(facetPtr, generator.genPtr, locale)
+		Self.locale = locale
+	End Method
 	
 	Rem
 	bbdoc: Set the format for dates.
@@ -2999,19 +2974,15 @@ End Type
 
 Type TTimeFacet Extends TDateFacet
 
-	Function Create:TTimeFacet()
-		Return CreateForLocale(defaultLocale)
-	End Function
+	Method New()
+		New(defaultLocale)
+	End Method
 
-	Function CreateForLocale:TTimeFacet(locale:String)
-		Local this:TTimeFacet = New TTimeFacet
-
-		this.facetPtr = bmx_timefacet_new()
-		this.localePtr = bmx_locale_new(this.facetPtr, generator.genPtr, locale)
-		this.locale = locale
-		
-		Return this
-	End Function
+	Method New(locale:String)
+		Self.facetPtr = bmx_timefacet_new()
+		Self.localePtr = bmx_locale_new(facetPtr, generator.genPtr, locale)
+		Self.locale = locale
+	End Method
 	
 	Rem
 	bbdoc: Set the format for dates.
@@ -3150,7 +3121,7 @@ bbdoc: Generates a #TDate object representing the date of the following @weekday
 about: Valid weekdays include #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday, #Friday, #Saturday (0-6).
 End Rem
 Function NextWeekday:TDate(date:TDate, WeekDay:Int)
-	Return TDate._create(bmx_next_weekday(date.datePtr, WeekDay))
+	Return New TDate(bmx_next_weekday(date.datePtr, WeekDay))
 End Function
 
 Rem
@@ -3158,7 +3129,7 @@ bbdoc: Generates a #TDate object representing the date of the previous @weekday 
 about: Valid weekdays include #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday, #Friday, #Saturday (0-6).
 End Rem
 Function PreviousWeekday:TDate(date:TDate, WeekDay:Int)
-	Return TDate._create(bmx_previous_weekday(date.datePtr, WeekDay))
+	Return New TDate(bmx_previous_weekday(date.datePtr, WeekDay))
 End Function
 
 Rem

@@ -5,6 +5,6 @@ Import BRL.StandardIO
 
 Local startDate:TDate = TDate.localDay()
 
-Local p:TDatePeriod = TDatePeriod.CreateWithDays(startDate, 100)
+Local p:TDatePeriod = New TDatePeriod(startDate, 100)
 
 Print p.begin().toString()
