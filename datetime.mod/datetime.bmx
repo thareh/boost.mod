@@ -3142,100 +3142,100 @@ End Function
 Rem
 bbdoc: Week Day - Sunday
 End Rem
-Const Sunday:Int = 0
+Const WEEKDAY_SUNDAY:Int = 0
 Rem
 bbdoc: Week Day - Monday
 End Rem
-Const Monday:Int = 1
+Const WEEKDAY_MONDAY:Int = 1
 Rem
 bbdoc: Week Day - Tuesday
 End Rem
-Const Tuesday:Int = 2
+Const WEEKDAY_TUESDAY:Int = 2
 Rem
 bbdoc: Week Day - Wednesday
 End Rem
-Const Wednesday:Int = 3
+Const WEEKDAY_WEDNESDAY:Int = 3
 Rem
 bbdoc: Week Day - Thursday
 End Rem
-Const Thursday:Int = 4
+Const WEEKDAY_THURSDAY:Int = 4
 Rem
 bbdoc: Week Day - Friday
 End Rem
-Const Friday:Int = 5
+Const WEEKDAY_FRIDAY:Int = 5
 Rem
 bbdoc: Week Day - Saturday
 End Rem
-Const Saturday:Int = 6
+Const WEEKDAY_SATURDAY:Int = 6
 
 Rem
 bbdoc: Month - January
 End Rem
-Const Jan:Int = 1
+Const MONTH_JAN:Int = 1
 Rem
 bbdoc: Month - February
 End Rem
-Const Feb:Int = 2
+Const MONTH_FEB:Int = 2
 Rem
 bbdoc: Month - March
 End Rem
-Const Mar:Int = 3
+Const MONTH_MAR:Int = 3
 Rem
 bbdoc: Month - April
 End Rem
-Const Apr:Int = 4
+Const MONTH_APR:Int = 4
 Rem
 bbdoc: Month - May
 End Rem
-Const May:Int = 5
+Const MONTH_MAY:Int = 5
 Rem
 bbdoc: Month - June
 End Rem
-Const Jun:Int = 6
+Const MONTH_JUN:Int = 6
 Rem
 bbdoc: Month - July
 End Rem
-Const Jul:Int = 7
+Const MONTH_JUL:Int = 7
 Rem
 bbdoc: Month - August
 End Rem
-Const Aug:Int = 8
+Const MONTH_AUG:Int = 8
 Rem
 bbdoc: Month - September
 End Rem
-Const Sep:Int = 9
+Const MONTH_SEP:Int = 9
 Rem
 bbdoc: Month - October
 End Rem
-Const Oct:Int = 10
+Const MONTH_OCT:Int = 10
 Rem
 bbdoc: Month - November
 End Rem
-Const Nov:Int = 11
+Const MONTH_NOV:Int = 11
 Rem
 bbdoc: Month - December
 End Rem
-Const Dec:Int = 12
+Const MONTH_DEC:Int = 12
 
 Rem
 bbdoc: Nth Day - First
 End Rem
-Const First:Int = 1
+Const DAY_FIRST:Int = 1
 Rem
 bbdoc: Nth Day - Second
 End Rem
-Const Second:Int = 2
+Const DAY_SECOND:Int = 2
 Rem
 bbdoc: Nth Day - Third
 End Rem
-Const Third:Int = 3
+Const DAY_THIRD:Int = 3
 Rem
 bbdoc: Nth Day - Fourth
 End Rem
-Const Fourth:Int = 4
+Const DAY_FOURTH:Int = 4
 Rem
 bbdoc: Nth Day - Fifth
 End Rem
-Const Fifth:Int = 5
+Const DAY_FIFTH:Int = 5
 
 
