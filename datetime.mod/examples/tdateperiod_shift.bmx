@@ -3,8 +3,8 @@ SuperStrict
 Framework Boost.DateTime
 Import BRL.StandardIO
 
-Local startDate:TDate = New TDate(2007, MONTH_FEB, 1)
-Local endDate:TDate = New TDate(2007, MONTH_MAR, 1)
+Local startDate:TDate = New TDate(2007, EMonth.February, 1)
+Local endDate:TDate = New TDate(2007, EMonth.March, 1)
 
 Local p:TDatePeriod = New TDatePeriod(startDate, endDate)
 

@@ -7,4 +7,4 @@ Local d:TDate = New TDate(1984, 4, 23)
 
 Print d.toString()
 
-Print New TDate(1990, MONTH_MAR, 12).toString()
+Print New TDate(1990, EMonth.March, 12).toString()

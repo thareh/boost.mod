@@ -107,12 +107,24 @@ Type TDate
 	
 	Print d.toString()
 	
-	Print New TDate(1990, Mar, 12).toString()
+	Print New TDate(1990, EMonth.March, 12).toString()
 	</pre>
 	<a href="../examples/tdate_create.bmx">Example source</a>
 	End Rem
-	Method New(year:Int, Month:Int, day:Int)
-		New (bmx_datetime_newdate(year, Month, day))
+	Method New(year:Int, _month:Int, day:Int)
+		New (bmx_datetime_newdate(year, _month, day))
+	End Method
+	
+	Method New(year:Int, _month:EMonth, day:Int)
+		New (bmx_datetime_newdate(year, Int(_month), day))
+	End Method
+	
+	Method New(year:Int, _month:EMonth, day:ENthDay)
+		New (bmx_datetime_newdate(year, Int(_month), Int(day)))
+	End Method
+	
+	Method New(year:Int, _month:Int, day:ENthDay)
+		New (bmx_datetime_newdate(year, _month, Int(day)))
 	End Method
 	
 	Rem
@@ -291,8 +303,8 @@ Type TDate
 	</pre>
 	<a href="../examples/tdate_ymd.bmx">Example source</a>
 	End Rem
-	Method ymd(year:Int Var, Month:Int Var, day:Int Var)
-		bmx_datetime_ymd(datePtr, Varptr year, Varptr Month, Varptr day)
+	Method ymd(year:Int Var, _month:Int Var, day:Int Var)
+		bmx_datetime_ymd(datePtr, Varptr year, Varptr _month, Varptr day)
 	End Method
 	
 	Rem
@@ -1065,8 +1077,8 @@ Type TDateIterator Extends TDate Abstract
 		Return bmx_datetime_iter_day(datePtr)
 	End Method
 	
-	Method ymd(year:Int Var, Month:Int Var, day:Int Var)
-		bmx_datetime_iter_ymd(datePtr,Varptr year,Varptr Month,Varptr day)
+	Method ymd(year:Int Var, _month:Int Var, day:Int Var)
+		bmx_datetime_iter_ymd(datePtr,Varptr year,Varptr _month,Varptr day)
 	End Method
 	
 	Method dayOfWeek:Int()
@@ -2629,8 +2641,20 @@ Type TPartialDate Extends TYearBasedGenerator
 	Rem
 	bbdoc: Creates a new #TPartialDate for the given day and month.
 	End Rem
-	Method New(day:Int, Month:Int)
-		ybgPtr = bmx_partial_date_new(day, Month)
+	Method New(day:Int, _month:Int)
+		ybgPtr = bmx_partial_date_new(day, _month)
+	End Method
+	
+	Method New(day:ENthDay, _month:Int)
+		ybgPtr = bmx_partial_date_new(Int(day), _month)
+	End Method
+	
+	Method New(day:ENthDay, _month:EMonth)
+		ybgPtr = bmx_partial_date_new(Int(day), Int(_month))
+	End Method
+	
+	Method New(day:Int, _month:EMonth)
+		ybgPtr = bmx_partial_date_new(day, Int(_month))
 	End Method
 
 	Method getDate:TDate(year:Int)
@@ -2659,13 +2683,25 @@ Type TLastDayOfWeekInMonth Extends TYearBasedGenerator
 
 	Rem
 	bbdoc: Creates a new #TLastDayOfWeekInMonth for the given weekday and month.
-	about: A weekday may be one of #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday,
-	#Friday or #Saturday.<br>
-	Month may be one of #Jan, #Feb, #Mar, #Apr, #May, #Jun, #Jul, #Aug, #Sep, #Oct, 
-	#Nov or #Dec.
+	about: A weekday may be one of #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+	#EWeekday.Friday or #EWeekday.Saturday.<br>
+	Month may be one of #EMonth.January, #EMonth.February, #EMonth.March, #EMonth.April, #EMonth.May, #EMonth.June, #EMonth.July,
+	#EMonth.August, #EMonth.September, #EMonth.October, #EMonth.November or #EMonth.December.
 	End Rem
-	Method New(WeekDay:Int, Month:Int)
-		ybgPtr = bmx_last_day_of_week_in_month_new(WeekDay, Month)
+	Method New(_weekday:Int, _month:Int)
+		ybgPtr = bmx_last_day_of_week_in_month_new(_weekday, _month)
+	End Method
+	
+	Method New(_weekday:EWeekday, _month:Int)
+		ybgPtr = bmx_last_day_of_week_in_month_new(Int(_weekday), _month)
+	End Method
+	
+	Method New(_weekday:EWeekday, _month:EMonth)
+		ybgPtr = bmx_last_day_of_week_in_month_new(Int(_weekday), Int(_month))
+	End Method
+	
+	Method New(_weekday:Int, _month:EMonth)
+		ybgPtr = bmx_last_day_of_week_in_month_new(_weekday, Int(_month))
 	End Method
 
 	Method getDate:TDate(year:Int)
@@ -2694,13 +2730,25 @@ Type TFirstDayOfWeekInMonth Extends TYearBasedGenerator
 
 	Rem
 	bbdoc: Creates a new #TFirstDayOfWeekInMonth for the given weekday and month.
-	about: A weekday may be one of #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday,
-	#Friday or #Saturday.<br>
-	Month may be one of #Jan, #Feb, #Mar, #Apr, #May, #Jun, #Jul, #Aug, #Sep, #Oct, 
-	#Nov or #Dec.
+	about: A weekday may be one of #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+	#EWeekday.Friday or #EWeekday.Saturday.<br>
+	Month may be one of #EMonth.January, #EMonth.February, #EMonth.March, #EMonth.April, #EMonth.May, #EMonth.June, #EMonth.July,
+	#EMonth.August, #EMonth.September, #EMonth.October, #EMonth.November or #EMonth.December.
 	End Rem
-	Method New(WeekDay:Int, Month:Int)
-		ybgPtr = bmx_first_day_of_week_in_month_new(WeekDay, Month)
+	Method New(_weekday:Int, _month:Int)
+		ybgPtr = bmx_first_day_of_week_in_month_new(_weekday, _month)
+	End Method
+	
+	Method New(_weekday:EWeekday, _month:Int)
+		ybgPtr = bmx_first_day_of_week_in_month_new(Int(_weekday), _month)
+	End Method
+	
+	Method New(_weekday:EWeekday, _month:EMonth)
+		ybgPtr = bmx_first_day_of_week_in_month_new(Int(_weekday), Int(_month))
+	End Method
+	
+	Method New(_weekday:Int, _month:EMonth)
+		ybgPtr = bmx_first_day_of_week_in_month_new(_weekday, Int(_month))
 	End Method
 
 	Method getDate:TDate(year:Int)
@@ -2726,19 +2774,43 @@ Type TNthDayOfWeekInMonth Extends TYearBasedGenerator
 	Private
 	Method New()
 	End Method
-
+	
 	Public
-
+	
 	Rem
 	bbdoc: Creates a new #TNthDayOfWeekInMonth for the given nth, weekday and month.
-	about: Nth may be one of #First, #Second, #Third, #Fourth, or #Fifth (1-5).
-	A weekday may be one of #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday,
-	#Friday or #Saturday (0-6).<br>
-	Month may be one of #Jan, #Feb, #Mar, #Apr, #May, #Jun, #Jul, #Aug, #Sep, #Oct, 
-	#Nov or #Dec (1-12).
+	about: Nth may be one of #ENthDay.First, #ENthDay.Second, #ENthDay.Third, #ENthDay.Fourth, or #ENthDay.Fifth (1-5).
+	A weekday may be one of #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+	#EWeekday.Friday or #EWeekday.Saturday (0-6).<br>
+	Month may be one of #EMonth.January, #EMonth.February, #EMonth.March, #EMonth.April, #EMonth.May, #EMonth.June, #EMonth.July,
+	#EMonth.August, #EMonth.September, #EMonth.October, #EMonth.November or #EMonth.December (1-12).
 	End Rem
-	Method New(nth:Int, WeekDay:Int, Month:Int)
-		ybgPtr = bmx_nth_day_of_week_in_month_new(nth, WeekDay, Month)
+	Method New(nth:Int, _weekday:Int, _month:Int)
+		ybgPtr = bmx_nth_day_of_week_in_month_new(nth, _weekday, _month)
+	End Method
+	
+	Method New(nth:ENthDay, _weekday:Int, _month:Int)
+		ybgPtr = bmx_nth_day_of_week_in_month_new(Int(nth), _weekday, _month)
+	End Method
+	
+	Method New(nth:ENthDay, _weekday:EWeekday, _month:Int)
+		ybgPtr = bmx_nth_day_of_week_in_month_new(Int(nth), Int(_weekday), _month)
+	End Method
+	
+	Method New(nth:ENthDay, _weekday:EWeekday, _month:EMonth)
+		ybgPtr = bmx_nth_day_of_week_in_month_new(Int(nth), Int(_weekday), Int(_month))
+	End Method
+	
+	Method New(nth:Int, _weekday:EWeekday, _month:EMonth)
+		ybgPtr = bmx_nth_day_of_week_in_month_new(nth, Int(_weekday), Int(_month))
+	End Method
+	
+	Method New(nth:Int, _weekday:Int, _month:EMonth)
+		ybgPtr = bmx_nth_day_of_week_in_month_new(nth, _weekday, Int(_month))
+	End Method
+	
+	Method New(nth:Int, _weekday:EWeekday, _month:Int)
+		ybgPtr = bmx_nth_day_of_week_in_month_new(nth, Int(_weekday), _month)
 	End Method
 
 	Method getDate:TDate(year:Int)
@@ -2770,11 +2842,15 @@ Type TFirstDayOfWeekAfter
 	
 	Rem
 	bbdoc: Creates a new #TFirstDayOfWeekAfter for the given weekday.
-	about: A weekday may be one of #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday,
-	#Friday or #Saturday (0-6).
+	about: A weekday may be one of #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+	#EWeekday.Friday or #EWeekday.Saturday (0-6).
 	End Rem
-	Method New(WeekDay:Int)
-		ybgPtr = bmx_first_day_of_week_after_new(WeekDay)
+	Method New(_weekday:Int)
+		ybgPtr = bmx_first_day_of_week_after_new(_weekday)
+	End Method
+	
+	Method New(_weekday:EWeekday)
+		ybgPtr = bmx_first_day_of_week_after_new(Int(_weekday))
 	End Method
 
 	Rem
@@ -2808,11 +2884,15 @@ Type TFirstDayOfWeekBefore
 	
 	Rem
 	bbdoc: Creates a new #TFirstDayOfWeekBefore for the given weekday.
-	about: A weekday may be one of #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday,
-	#Friday or #Saturday (0-6).
+	about: A weekday may be one of #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+	#EWeekday.Friday or #EWeekday.Saturday (0-6).
 	End Rem
-	Method New(WeekDay:Int)
-		ybgPtr = bmx_first_day_of_week_before_new(WeekDay)
+	Method New(_weekday:Int)
+		ybgPtr = bmx_first_day_of_week_before_new(_weekday)
+	End Method
+	
+	Method New(_weekday:EWeekday)
+		ybgPtr = bmx_first_day_of_week_before_new(Int(_weekday))
 	End Method
 
 	Rem
@@ -3086,156 +3166,130 @@ End Function
 Rem
 bbdoc: Get the weekday text for the specified @weekday (0 - 6).
 about: This is based on the current weekday format as specified by #TDateFacet.<br>
-Valid weekdays include #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday, #Friday, #Saturday (0-6).
+Valid weekdays include #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+#EWeekday.Friday, #EWeekday.Saturday (0-6).
 End Rem
-Function WeekDay:String(WeekDay:Int)
-	Return bmx_weekday_to_string(WeekDay)
+Function WeekDay:String(_weekday:Int)
+	Return bmx_weekday_to_string(_weekday)
 End Function
+
+Function WeekDay:String(_weekday:EWeekday)
+	Return bmx_weekday_to_string(Int(_weekday))
+EndFunction
 
 Rem
 bbdoc: Get the month text for the specified @month (1 - 12).
 about: This is based on the current month format as specified by #TDateFacet.
 End Rem
-Function Month:String(Month:Int)
-	Return bmx_month_to_string(Month)
+Function Month:String(_month:Int)
+	Return bmx_month_to_string(_month)
+End Function
+
+Function Month:String(_month:EMonth)
+	Return bmx_month_to_string(Int(_month))
 End Function
 
 Rem
 bbdoc: Calculates the number of days from given date until given @weekday.
-about: Valid weekdays include #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday, #Friday, #Saturday (0-6).
+about: Valid weekdays include #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+#EWeekday.Friday, #EWeekday.Saturday (0-6).
 End Rem
-Function DaysUntilWeekday:Int(date:TDate, WeekDay:Int)
-	Return bmx_days_until_weekday(date.datePtr, WeekDay)
+Function DaysUntilWeekday:Int(date:TDate, _weekday:Int)
+	Return bmx_days_until_weekday(date.datePtr, _weekday)
+End Function
+
+Function DaysUntilWeekday:Int(date:TDate, _weekday:EWeekday)
+	Return bmx_days_until_weekday(date.datePtr, Int(_weekday))
 End Function
 
 Rem
 bbdoc: Calculates the number of day from given date to previous given @weekday.
-about: Valid weekdays include #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday, #Friday, #Saturday (0-6).
+about: Valid weekdays include #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+#EWeekday.Friday, #EWeekday.Saturday (0-6).
 End Rem
-Function DaysBeforeWeekday:Int(date:TDate, WeekDay:Int)
-	Return bmx_days_before_weekday(date.datePtr, WeekDay)
+Function DaysBeforeWeekday:Int(date:TDate, _weekday:Int)
+	Return bmx_days_before_weekday(date.datePtr, _weekday)
+End Function
+
+Function DaysBeforeWeekday:Int(date:TDate, _weekday:EWeekday)
+	Return bmx_days_before_weekday(date.datePtr, Int(_weekday))
 End Function
 
 Rem
 bbdoc: Generates a #TDate object representing the date of the following @weekday from the given @date.
-about: Valid weekdays include #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday, #Friday, #Saturday (0-6).
+about: Valid weekdays include #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+#EWeekday.Friday, #EWeekday.Saturday (0-6).
 End Rem
-Function NextWeekday:TDate(date:TDate, WeekDay:Int)
-	Return New TDate(bmx_next_weekday(date.datePtr, WeekDay))
+Function NextWeekday:TDate(date:TDate, _weekday:Int)
+	Return New TDate(bmx_next_weekday(date.datePtr, _weekday))
+End Function
+
+Function NextWeekday:TDate(date:TDate, _weekday:EWeekday)
+	Return New TDate(bmx_next_weekday(date.datePtr, Int(_weekday)))
 End Function
 
 Rem
 bbdoc: Generates a #TDate object representing the date of the previous @weekday from the given @date.
-about: Valid weekdays include #Sunday, #Monday, #Tuesday, #Wednesday, #Thursday, #Friday, #Saturday (0-6).
+about: Valid weekdays include #EWeekday.Sunday, #EWeekday.Monday, #EWeekday.Tuesday, #EWeekday.Wednesday, #EWeekday.Thursday,
+#EWeekday.Friday, #EWeekday.Saturday (0-6).
 End Rem
-Function PreviousWeekday:TDate(date:TDate, WeekDay:Int)
-	Return New TDate(bmx_previous_weekday(date.datePtr, WeekDay))
+Function PreviousWeekday:TDate(date:TDate, _weekday:Int)
+	Return New TDate(bmx_previous_weekday(date.datePtr, _weekday))
+End Function
+
+Function PreviousWeekday:TDate(date:TDate, _weekday:EWeekday)
+	Return New TDate(bmx_previous_weekday(date.datePtr, Int(_weekday)))
 End Function
 
 Rem
 bbdoc: 
 End Rem
-Function EndOfMonthDay:Int(year:Int, Month:Int)
-	Return bmx_end_of_month_day(year, Month)
+Function EndOfMonthDay:Int(year:Int, _month:Int)
+	Return bmx_end_of_month_day(year, _month)
+End Function
+
+Function EndOfMonthDay:Int(year:Int, _month:EMonth)
+	Return bmx_end_of_month_day(year, Int(_month))
 End Function
 
 Rem
-bbdoc: Week Day - Sunday
-End Rem
-Const WEEKDAY_SUNDAY:Int = 0
-Rem
-bbdoc: Week Day - Monday
-End Rem
-Const WEEKDAY_MONDAY:Int = 1
-Rem
-bbdoc: Week Day - Tuesday
-End Rem
-Const WEEKDAY_TUESDAY:Int = 2
-Rem
-bbdoc: Week Day - Wednesday
-End Rem
-Const WEEKDAY_WEDNESDAY:Int = 3
-Rem
-bbdoc: Week Day - Thursday
-End Rem
-Const WEEKDAY_THURSDAY:Int = 4
-Rem
-bbdoc: Week Day - Friday
-End Rem
-Const WEEKDAY_FRIDAY:Int = 5
-Rem
-bbdoc: Week Day - Saturday
-End Rem
-Const WEEKDAY_SATURDAY:Int = 6
+bbdoc: Weekday
+EndRem
+Enum EWeekday:Int
+	Sunday
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Saturday
+EndEnum
 
 Rem
-bbdoc: Month - January
-End Rem
-Const MONTH_JAN:Int = 1
-Rem
-bbdoc: Month - February
-End Rem
-Const MONTH_FEB:Int = 2
-Rem
-bbdoc: Month - March
-End Rem
-Const MONTH_MAR:Int = 3
-Rem
-bbdoc: Month - April
-End Rem
-Const MONTH_APR:Int = 4
-Rem
-bbdoc: Month - May
-End Rem
-Const MONTH_MAY:Int = 5
-Rem
-bbdoc: Month - June
-End Rem
-Const MONTH_JUN:Int = 6
-Rem
-bbdoc: Month - July
-End Rem
-Const MONTH_JUL:Int = 7
-Rem
-bbdoc: Month - August
-End Rem
-Const MONTH_AUG:Int = 8
-Rem
-bbdoc: Month - September
-End Rem
-Const MONTH_SEP:Int = 9
-Rem
-bbdoc: Month - October
-End Rem
-Const MONTH_OCT:Int = 10
-Rem
-bbdoc: Month - November
-End Rem
-Const MONTH_NOV:Int = 11
-Rem
-bbdoc: Month - December
-End Rem
-Const MONTH_DEC:Int = 12
+bbdoc: Month
+EndRem
+Enum EMonth:Int
+	January = 1
+	February
+	March
+	April
+	May
+	June
+	July
+	August
+	September
+	October
+	November
+	December
+EndEnum
 
 Rem
-bbdoc: Nth Day - First
-End Rem
-Const DAY_FIRST:Int = 1
-Rem
-bbdoc: Nth Day - Second
-End Rem
-Const DAY_SECOND:Int = 2
-Rem
-bbdoc: Nth Day - Third
-End Rem
-Const DAY_THIRD:Int = 3
-Rem
-bbdoc: Nth Day - Fourth
-End Rem
-Const DAY_FOURTH:Int = 4
-Rem
-bbdoc: Nth Day - Fifth
-End Rem
-Const DAY_FIFTH:Int = 5
-
-
+bbdoc: Nth Day
+EndRem
+Enum ENthDay:Int
+	First = 1
+	Second
+	Third
+	Fourth
+	Fifth
+EndEnum

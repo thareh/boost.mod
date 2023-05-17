@@ -29,19 +29,19 @@ Local year:Int = Input("Enter year : ").toInt()
 
 Local holidays:TList = New TList
 
-holidays.addLast(New TPartialDate(1, MONTH_Jan)) ' Western New Year
-holidays.addLast(New TPartialDate(4, MONTH_JUL)) ' US Independence Day
-holidays.addLast(New TPartialDate(25, MONTH_DEC)) ' Christmas Day
+holidays.addLast(New TPartialDate(1, EMonth.January)) ' Western New Year
+holidays.addLast(New TPartialDate(4, EMonth.July)) ' US Independence Day
+holidays.addLast(New TPartialDate(25, EMonth.December)) ' Christmas Day
 
 
 ' US labor day
-holidays.addLast(New TNthDayOfWeekInMonth(DAY_FIRST, WEEKDAY_MONDAY, MONTH_SEP))
+holidays.addLast(New TNthDayOfWeekInMonth(ENthDay.First, EWeekday.Monday, EMonth.September))
 ' Martin Luther King Day
-holidays.addLast(New TNthDayOfWeekInMonth(DAY_THIRD, WEEKDAY_MONDAY, MONTH_JAN))
+holidays.addLast(New TNthDayOfWeekInMonth(ENthDay.Third, EWeekday.Monday, EMonth.January))
 ' Presidents day
-holidays.addLast(New TNthDayOfWeekInMonth(DAY_SECOND, WEEKDAY_TUESDAY, MONTH_FEB))
+holidays.addLast(New TNthDayOfWeekInMonth(ENthDay.Second, EWeekday.Tuesday, EMonth.February))
 ' Thanksgiving
-holidays.addLast(New TNthDayOfWeekInMonth(DAY_FOURTH, WEEKDAY_THURSDAY, MONTH_NOV))
+holidays.addLast(New TNthDayOfWeekInMonth(ENthDay.Fourth, EWeekday.Thursday, EMonth.November))
 
 
 Local allHolidays:TList = New TList
