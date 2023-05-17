@@ -21,7 +21,7 @@ Local ditr:TDateDayIterator = New TDateDayIterator(New TDate(y, m, 1))
 ' loop thru the days and print each one
 While Not ditr.isAfter(endOfMonth)
 
-	Print ditr.toString() + " [" + WeekDay(ditr.dayOfWeek()) + "]"
+	Print ditr.toString() + " [" + WeekdayName(ditr.dayOfWeek()) + "]"
 	
 	ditr.forward()
 

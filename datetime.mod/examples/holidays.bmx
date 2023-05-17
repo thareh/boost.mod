@@ -63,6 +63,6 @@ Print "~nNumber Holidays: " + allHolidays.count()
 
 
 Function printDate(date:TDate)
-	Print date.toString() + " [" + WeekDay(date.dayOfWeek()) + "]"
+	Print date.toString() + " [" + WeekdayName(date.dayOfWeek()) + "]"
 End Function
 
