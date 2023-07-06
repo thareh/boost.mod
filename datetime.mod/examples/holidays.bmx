@@ -29,19 +29,19 @@ Local year:Int = Input("Enter year : ").toInt()
 
 Local holidays:TList = New TList
 
-holidays.addLast(New TPartialDate(1, Jan)) ' Western New Year
-holidays.addLast(New TPartialDate(4, Jul)) ' US Independence Day
-holidays.addLast(New TPartialDate(25, Dec)) ' Christmas Day
+holidays.addLast(New TPartialDate(1, EMonth.January)) ' Western New Year
+holidays.addLast(New TPartialDate(4, EMonth.July)) ' US Independence Day
+holidays.addLast(New TPartialDate(25, EMonth.December)) ' Christmas Day
 
 
 ' US labor day
-holidays.addLast(New TNthDayOfWeekInMonth(First, Monday, Sep))
+holidays.addLast(New TNthDayOfWeekInMonth(ENthDay.First, EWeekday.Monday, EMonth.September))
 ' Martin Luther King Day
-holidays.addLast(New TNthDayOfWeekInMonth(Third, Monday, Jan))
+holidays.addLast(New TNthDayOfWeekInMonth(ENthDay.Third, EWeekday.Monday, EMonth.January))
 ' Presidents day
-holidays.addLast(New TNthDayOfWeekInMonth(Second, Tuesday, Feb))
+holidays.addLast(New TNthDayOfWeekInMonth(ENthDay.Second, EWeekday.Tuesday, EMonth.February))
 ' Thanksgiving
-holidays.addLast(New TNthDayOfWeekInMonth(Fourth, Thursday, Nov))
+holidays.addLast(New TNthDayOfWeekInMonth(ENthDay.Fourth, EWeekday.Thursday, EMonth.November))
 
 
 Local allHolidays:TList = New TList
@@ -63,6 +63,6 @@ Print "~nNumber Holidays: " + allHolidays.count()
 
 
 Function printDate(date:TDate)
-	Print date.toString() + " [" + WeekDay(date.dayOfWeek()) + "]"
+	Print date.toString() + " [" + WeekdayName(date.dayOfWeek()) + "]"
 End Function
 
